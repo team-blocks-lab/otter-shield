@@ -22,7 +22,7 @@ OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 �
 
 한국·독일 업무망은 같은 게시판 코드를 사용하고 DB·계정·환경설정은 분리합니다. 독일망에는 Wazuh를 적용해 탐지·대응 결과를 비교할 계획입니다.
 
-[망별 구성도](design/topology/README.md) · [ERD·클래스 다이어그램](design/README.md)
+[망별 Topology](design/topology/README.md) · [ERD·클래스 다이어그램](design/README.md)
 
 ## 구축·보안 검증 계획
 
@@ -53,7 +53,7 @@ OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 �
 |---|---|
 | 일정·업무 | [WBS](WBS.md) · [최종 Excel](https://raw.githubusercontent.com/team-blocks-lab/otter-shield/main/plans/wbs/otter-shield-wbs-final.xlsx) · [업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2) |
 | 계획서 | [프로젝트 수행 계획서 v1.0](plans/project-plan-v1.0.pdf) |
-| 설계 | [토폴로지·ERD·클래스 다이어그램](design/README.md) |
+| 설계 | [Topology·ERD·클래스 다이어그램](design/README.md) |
 | 앱 | [사내 게시판](apps/m1-intranet/README.md) · [OTT·AI 자막](apps/m3-ott/README.md) · [캐나다 Store](apps/m5-store/README.md) |
 | 회의 | [회의록·결정사항](meetings/README.md) |
 | 협업 | [작업 기록·검토·완료 처리 방법](CONTRIBUTING.md) |
