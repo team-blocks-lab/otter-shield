@@ -4,7 +4,7 @@ Team Blocks · 2026.10.19–11.16 · 최종 발표 11/16
 
 **[최종 WBS 엑셀 다운로드](https://raw.githubusercontent.com/team-blocks-lab/otter-shield/main/plans/wbs/otter-shield-wbs-final.xlsx)** · A3 가로 2장
 
-[업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2) · [토폴로지](design/topology/README.md) · [팀 기술서](README.md#팀원별-기술서)
+[업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2) · [Topology](design/topology/README.md) · [팀 기술서](README.md#팀원별-기술서)
 
 엑셀에서 담당 업무·날짜를 확인하고, 아래 Issue에서 세부 작업과 완료 기준을 확인합니다. 진행 상태와 결과는 Issue·업무 보드에 기록합니다.
 
@@ -12,13 +12,13 @@ Team Blocks · 2026.10.19–11.16 · 최종 발표 11/16
 
 | 기간 | 인프라·보안 | 개발·공동 작업 |
 |---|---|---|
-| 10/20–21 | AS-IS 토폴로지 작성·등록 | WBS·계획서 제출 |
+| 10/20–21 | AS-IS Topology 작성·등록 | WBS·계획서 제출 |
 | 10/21–23 | 기본망 구축 착수·IP/자원 기술 검토 | 실행 환경·ERD·클래스 설계·게시판 개발, 10/23 공수 확인 |
 | 10/24·26–28 | 기본 서비스·라우팅·VPN 구성, 10/28 기본망 목표 | OTT 로그인·권한·목록·영상 재생, CI 준비 점검 |
 | 10/29–30 | M1·M2·M4 공격 재현·원인 분석 | 게시판·OTT 배포, Store 최소 기능·AWS 준비 점검 |
 | 10/31 | — | Store AWS 최초 배포·연동 |
 | 11/02 | M3·M5 공격 재현·원인 분석 | AI 개발·Store 잔여 오류 확인 |
-| 11/03 | TO-BE 토폴로지·보안 정책 설계 | AI 자막 파일 생성 |
+| 11/03 | TO-BE Topology·보안 정책 설계 | AI 자막 파일 생성 |
 | 11/04–05 | 보안 개선·이중화·DB 복제 구성 | 한국 CD·AI 배포 11/04, Store CD 11/05 |
 | 11/06 | 개선 설정 통합·복원·장애 테스트 | 앱·AI·CI/CD 통합 테스트 |
 | 11/09–10 | 재공격·정상 동작·장애 복구 검증 | 앱 회귀·배포 롤백·RDS 복원 검증 |
@@ -26,7 +26,7 @@ Team Blocks · 2026.10.19–11.16 · 최종 발표 11/16
 | 11/13–14 | 11/13 전원 리허설 | 11/14 파일·링크·대체 시연 점검 |
 | 11/16 | 최종 발표 | 시연·실습 자원 정리 |
 
-10/21 IP 배정·M1–M3 일반 라우팅 결정·WBS/계획서 제출은 완료했습니다. 토폴로지 등록과 전체 망 기술 검토는 구분하며, 잔여 검토는 [#6](https://github.com/team-blocks-lab/otter-shield/issues/6)에서 관리합니다.
+10/21 IP 배정·M1–M3 일반 라우팅 결정·WBS/계획서 제출은 완료했습니다. Topology 등록과 전체 망 기술 검토는 구분하며, 잔여 검토는 [#6](https://github.com/team-blocks-lab/otter-shield/issues/6)에서 관리합니다.
 
 ## 담당별 Issue
 

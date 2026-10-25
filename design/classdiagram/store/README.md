@@ -30,7 +30,7 @@
 
 주문 당시 상품명·단가·배송지를 보관하고, 주문 저장과 선택 장바구니 항목 삭제는 하나의 트랜잭션으로 처리합니다. 주문 상품은 `PurchaseOrder.items`를 통해 함께 저장합니다.
 
-## 도면
+## Class Diagram
 
 ![Store 클래스 다이어그램](store_ClassDiagram.drawio.png)
 

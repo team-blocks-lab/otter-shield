@@ -27,7 +27,7 @@
 
 사진은 요청의 `image`로 받고, 게시글에는 저장 식별자인 `imageKey`를 보관합니다. 응답에는 화면에서 사용할 `imageUrl`을 전달합니다.
 
-## 도면
+## Class Diagram
 
 ![사내 게시판 클래스 다이어그램](post_ClassDiagram.drawio.png)
 

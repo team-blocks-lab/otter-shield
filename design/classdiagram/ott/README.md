@@ -26,7 +26,7 @@
 
 `VideoListResponse`의 `page`·`size`·`hasNext`는 화면의 더보기 처리에 사용합니다. 자막이 없는 영상은 빈 자막 목록을 반환합니다.
 
-## 도면
+## Class Diagram
 
 ![OTT 메인 클래스 다이어그램](OTT_ClassDiagram.drawio.png)
 
