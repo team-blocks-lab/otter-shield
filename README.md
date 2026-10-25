@@ -12,7 +12,6 @@ Team Blocks가 보안 컨설팅 회사 NetBlocks의 역할로 가상 OTT 고객�
 
 - 업무·일정: [WBS](WBS.md) · [최종 엑셀 다운로드](https://raw.githubusercontent.com/team-blocks-lab/otter-shield/main/plans/wbs/otter-shield-wbs-final.xlsx) · [업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2)
 - 최종 계획서: [프로젝트 수행 계획서 v1.0 PDF](plans/project-plan-v1.0.pdf)
-- 계획 이력: [기존 계획서 v0.3 PDF](plans/project-plan-v0.3.pdf)
 - 회의·결정사항: [회의록](meetings/README.md) 
 - 팀 설계 자료: [Topology · ERD · Class Diagram](design/README.md)
 - 개발 코드: [Intranet](apps/m1-intranet/README.md) · [OTT & AI](apps/m3-ott/README.md) · [Store](apps/m5-store/README.md)
