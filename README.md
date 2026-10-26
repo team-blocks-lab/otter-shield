@@ -45,7 +45,7 @@ OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 �
 | 네트워크·가상화 | GNS3, VMware/vSphere, Sophos UTM 9, VyOS |
 | 보안·컨테이너·클라우드 | Wazuh, Kubernetes, AWS |
 | 앱 개발 | React, Spring Boot, FastAPI |
-| 배포 자동화 | GitHub Actions, Argo CD |
+| 배포 자동화 | 선정 보류: GitHub Actions + Argo CD / Jenkins 기반 구성 |
 
 ## 프로젝트 자료
 
