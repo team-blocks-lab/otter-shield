@@ -1,0 +1,53 @@
+# 회의록 #4 · M3·M4 토폴로지 변경 및 AS-IS 일정 조정
+
+**일시:** 2026.10.26 (월) · **단계:** AS-IS 구축
+
+[프로젝트](../README.md) · [WBS](../WBS.md) · [Topology](../design/topology/README.md)
+
+## 1. 오늘 결정·진행한 내용
+
+### M3 토폴로지 변경
+
+- ESXi 내부 Linux VM에서 Kubernetes를 운영하는 구조로 변경.
+- Control Plane·Worker VM과 해당 노드에서 실행하는 Spring Boot·FastAPI·Redis Pod를 구분.
+- DMZ·가상화/노드 구간·DATA의 UTM 연결과 Nginx → 앱 → DB 경로 반영.
+
+### M4 토폴로지 전면 변경
+
+확정된 설계에 따라 UTM 내부 인터페이스 4개로 구간을 분리.
+
+| 구간 | 구성 | 역할 |
+|---|---|---|
+| OPS | 운영 PC 2대·S04 시험 PC | 정상 운영 및 백업 파일 접근 시험 |
+| REPLICA | MySQL Replica | M3 Primary의 변경 데이터 복제 |
+| BACKUP | Backup Server·별도 복원 시험 MySQL | 덤프 보관·별도 DB 복원 검증 |
+| PROXY | ProxySQL | 운영 SQL 접속 중계·지정한 Replica 읽기 시험 |
+
+- Replica·ProxySQL·백업·별도 복원을 AS-IS 구성에 포함.
+- Replica가 M3 Primary에 접속하여 복제 데이터를 수신하고, Backup Server가 Replica에서 덤프를 추출하여 보관.
+- 보관한 파일은 별도 MySQL VM에 복원하여 정상 조회 확인. 복제·백업 파일 생성·복원 성공을 각각 검증.
+- UTM의 구간별 게이트웨이는 연결선에 표시. 별도 게이트웨이 장비로 표현하지 않음.
+- 기존 S3 원격 백업 계획 유지. 정상 백업 계정과 S04 시험 계정을 구분하여 전후 비교.
+
+### CI/CD 도구 선정 보류
+
+- GitHub Actions + Argo CD와 Jenkins 기반 구성 중 선택은 실제 작업 착수 시점까지 보류.
+- 기존 GitHub Actions + Argo CD 기본안을 확정사항으로 사용하지 않음.
+
+### AS-IS 완료 기한 연장
+
+- **AS-IS 완료 기한을 10월 30일 금요일까지로 연장.**
+- 토폴로지 수정뿐 아니라 기본 통신·필수 서비스 동작·설정 보존까지 확인.
+- 후속 공격·개선·개발 일정은 변경된 WBS에서 관리하며, 실제 완료 여부는 각 담당 Issue에 기록.
+
+## 2. 다음 작업·확인 사항
+
+| 기한 | 작업 | 담당 |
+|---|---|---|
+| 10/30 | 변경한 토폴로지에 맞춰 AS-IS 구축·정상 통신·서비스 확인 | 전원 |
+| 10/30 | ESXi·Kubernetes·DB 연결 및 M4/M5 접속 조건 공유 | M3 |
+| 10/30 | 4구간 구성·복제·덤프·별도 복원·ProxySQL 확인 | M4·M3 |
+| 작업 착수 시 | CI/CD 도구 비교·선정 | M3·M5 |
+| 일정 점검 시 | 후속 작업 영향 확인 및 WBS·Issue 갱신 | PM·PL·각 담당 |
+
+**회의 결과:** M3·M4 변경 설계를 기준으로 구축 진행. CI/CD 도구 선정은 착수 시까지 보류하며, AS-IS 완료 기한은 10/30로 연장.
