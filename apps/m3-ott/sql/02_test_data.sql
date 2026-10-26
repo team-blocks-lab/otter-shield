@@ -29,4 +29,57 @@ INSERT INTO subtitle(video_id,language,subtitle_key)
 SELECT v.video_id,'en','test/subtitles/ocean.en.vtt' FROM video v
 WHERE video_key='test/videos/ocean.mp4'
 AND NOT EXISTS(SELECT 1 FROM subtitle s WHERE s.video_id=v.video_id AND s.language='en');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원04','test_member04','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member04');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원05','test_member05','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member05');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원06','test_member06','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member06');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원07','test_member07','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member07');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원08','test_member08','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member08');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원09','test_member09','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member09');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원10','test_member10','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member10');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원11','test_member11','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member11');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원12','test_member12','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member12');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원13','test_member13','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member13');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원14','test_member14','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member14');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원15','test_member15','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member15');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원16','test_member16','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member16');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원17','test_member17','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member17');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원18','test_member18','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member18');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원19','test_member19','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member19');
+INSERT INTO member(name,login_id,password_hash)
+SELECT '가상회원20','test_member20','!TEST_ONLY_NO_LOGIN'
+WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member20');
 COMMIT;
+SELECT COUNT(*) AS test_member_count FROM member WHERE login_id REGEXP '^test_member(0[1-9]|1[0-9]|20)
+;
