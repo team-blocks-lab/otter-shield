@@ -6,12 +6,14 @@ Team Blocks · 최종 발표 2026.11.16 · **10/26 개정**
 
 엑셀에서 일정과 선행 작업을 확인하고, 담당 Issue에서 세부 작업·완료 조건을 확인합니다.
 
+10/30은 AS-IS 기본 인프라와 보안 시험에 필요한 최소 앱·계정·데이터·경로의 인수일입니다. 최종 AS-IS 도면의 구성은 유지하며, AI 자막·다중 Pod 세션·AWS Store 전체 연동은 후속 일정에서 완료 여부를 확인합니다.
+
 ## 주요 일정
 
 | 기간 | 인프라·보안 | 개발·배포 |
 |---|---|---|
 | 10/27–28 | 망별 장비·서버 구성, DB·접속 정보 공유 | 공통 게시판 최소 기능 개발·10/28 실행본 인계 |
-| 10/29–30 | 망 간 라우팅·VPN, M4 복제·백업·별도 복원, **10/30 AS-IS 완료** | M1/M2 게시판 배포, M3 OTT 최소 기능 배포·확인 |
+| 10/29–30 | 망 간 라우팅·VPN, M4 복제·백업·별도 복원, **10/30 AS-IS 기본 구축·최소 테스트 인수** | M1/M2 게시판 배포, M3 OTT 최소 기능 배포·확인 |
 | 10/31–11/01 | — | M5 Store 로컬 최소 기능·AWS 기반 구성 |
 | 11/02 | S01~S05 공격 재현·원인 분석 | 배포 오류 보완 |
 | 11/03 | TO-BE 설계·정책 검토 | Store 초기 연동·AI 자막 개발 |
@@ -40,11 +42,11 @@ Team Blocks · 최종 발표 2026.11.16 · **10/26 개정**
 |---|---|---|
 | 설계·일정 관리 | 각 담당 진행 공유 → PM 일정 조정·PL 연결 검토 | [#6](https://github.com/team-blocks-lab/otter-shield/issues/6) |
 | 라우팅·VPN | M1 종단 도달성 확인 → M2/M5 VPN · M1–M3 일반 라우팅 | [#7](https://github.com/team-blocks-lab/otter-shield/issues/7) |
-| 게시판·OTT·AI | M5 코드·DB 명세 인계 → M1/M2 게시판 배포 · M3 OTT/AI 배포 | [#8](https://github.com/team-blocks-lab/otter-shield/issues/8) |
+| 게시판·OTT·AI | M5 코드·DB 명세 인계 → M1/M2 게시판 배포 · M3 OTT/AI 배포. 10/30 최소 테스트·11/09 DEV18 최종 인수 | [#8](https://github.com/team-blocks-lab/otter-shield/issues/8) |
 | 독일 Wazuh | M2 AS-IS 인증 로그 확보 → Wazuh 탐지·대응·해제 확인 | [#9](https://github.com/team-blocks-lab/otter-shield/issues/9) |
 | DB 복제·백업·복원 | M3 DB 접속 정보 인계 → M4 Replica·덤프·별도 복원·ProxySQL 검증 | [#10](https://github.com/team-blocks-lab/otter-shield/issues/10) |
 | 앱·노드 장애 복구 | M3 클러스터·M5 앱/세션 준비 → 공동 장애·복구 시험 | [#11](https://github.com/team-blocks-lab/otter-shield/issues/11) |
-| AWS Store | M5 계정·리전·권한 확인 → EKS/RDS·ALB·도메인·앱 연동 | [#12](https://github.com/team-blocks-lab/otter-shield/issues/12) |
+| AWS·미디어 | M5 Store 계정/권한·EKS/RDS·ALB·도메인 연동. M3 미디어는 M3-A14(10/29–30), 자막·최종 확인은 DEV14/18 | [#12](https://github.com/team-blocks-lab/otter-shield/issues/12) |
 | 최종 보고·발표 | 각 담당 결과·한계·시연 자료 제출 → PM 취합·PL 검토 | [#13](https://github.com/team-blocks-lab/otter-shield/issues/13) |
 
 ## 변경 이력
@@ -56,6 +58,8 @@ Team Blocks · 최종 발표 2026.11.16 · **10/26 개정**
 | 10/26 | M4 **OPS·REPLICA·BACKUP·PROXY** 설계 확정 | Replica·ProxySQL·백업·별도 복원을 AS-IS에 포함 |
 | 10/26 | CI/CD 도구 선정 보류 | 작업 착수 시 GitHub Actions + Argo CD와 Jenkins 기반 구성 비교·선정 |
 | 10/26 | M5 개발·AWS 일정 재배치 | 10/30 게시판·OTT 최소 배포 우선. Store·AI·자동화는 순차 진행 |
+| 10/26 | 최소 테스트·최종 인수 범위 구분 | 10/30 기본 구축·최소 앱 테스트, M3-A14 미디어·DEV18 최종 인수 및 S05→M3 개선 인계 추가 |
 | 10/26 | 인계일·시험 선행 조건 보완 | S05 경로 인계 10/30·노드 시험 11/09–10. 게시판 배포·UTM3 개선 적용 후 후속 확인 |
 
 완료한 작업과 기록은 유지합니다. 변경된 구간은 실제 동작을 다시 확인하고, 지연 시 받는 담당에게 영향과 예상 완료일을 공유합니다. 상세 설정·검증 기록은 팀 Notion 기술서에 남깁니다.
+
