@@ -28,13 +28,15 @@ Team Blocks · 최종 발표 2026.11.16 · **10/26 개정**
 
 ## 담당별 Issue
 
-| 담당 | AS-IS | 공격 | 개선 | 재검증 | 결과 정리 |
-|---|---|---|---|---|---|
-| M1 유용수 | [#14](https://github.com/team-blocks-lab/otter-shield/issues/14) | [#15](https://github.com/team-blocks-lab/otter-shield/issues/15) | [#16](https://github.com/team-blocks-lab/otter-shield/issues/16) | [#17](https://github.com/team-blocks-lab/otter-shield/issues/17) | [#18](https://github.com/team-blocks-lab/otter-shield/issues/18) |
-| M2 윤서영 | [#19](https://github.com/team-blocks-lab/otter-shield/issues/19) | [#20](https://github.com/team-blocks-lab/otter-shield/issues/20) | [#21](https://github.com/team-blocks-lab/otter-shield/issues/21) | [#22](https://github.com/team-blocks-lab/otter-shield/issues/22) | [#23](https://github.com/team-blocks-lab/otter-shield/issues/23) |
-| M3 홍은서 | [#24](https://github.com/team-blocks-lab/otter-shield/issues/24) | [#25](https://github.com/team-blocks-lab/otter-shield/issues/25) | [#26](https://github.com/team-blocks-lab/otter-shield/issues/26) | [#27](https://github.com/team-blocks-lab/otter-shield/issues/27) | [#28](https://github.com/team-blocks-lab/otter-shield/issues/28) |
-| M4 박진혁 | [#29](https://github.com/team-blocks-lab/otter-shield/issues/29) | [#30](https://github.com/team-blocks-lab/otter-shield/issues/30) | [#31](https://github.com/team-blocks-lab/otter-shield/issues/31) | [#32](https://github.com/team-blocks-lab/otter-shield/issues/32) | [#33](https://github.com/team-blocks-lab/otter-shield/issues/33) |
-| M5 유은혜 | [#34](https://github.com/team-blocks-lab/otter-shield/issues/34) | [#35](https://github.com/team-blocks-lab/otter-shield/issues/35) | [#36](https://github.com/team-blocks-lab/otter-shield/issues/36) | [#37](https://github.com/team-blocks-lab/otter-shield/issues/37) | [#38](https://github.com/team-blocks-lab/otter-shield/issues/38) |
+| 담당 | AS-IS | 공격 | 개선 | 재검증 | 결과 정리  개발·AWS |
+|---|---|---|---|---|------|
+| M1 유용수 | [#14](https://github.com/team-blocks-lab/otter-shield/issues/14) | [#15](https://github.com/team-blocks-lab/otter-shield/issues/15) | [#16](https://github.com/team-blocks-lab/otter-shield/issues/16) | [#17](https://github.com/team-blocks-lab/otter-shield/issues/17) | [#18](https://github.com/team-blocks-lab/otter-shield/issues/18)  — |
+| M2 윤서영 | [#19](https://github.com/team-blocks-lab/otter-shield/issues/19) | [#20](https://github.com/team-blocks-lab/otter-shield/issues/20) | [#21](https://github.com/team-blocks-lab/otter-shield/issues/21) | [#22](https://github.com/team-blocks-lab/otter-shield/issues/22) | [#23](https://github.com/team-blocks-lab/otter-shield/issues/23)  — |
+| M3 홍은서 | [#24](https://github.com/team-blocks-lab/otter-shield/issues/24) | [#25](https://github.com/team-blocks-lab/otter-shield/issues/25) | [#26](https://github.com/team-blocks-lab/otter-shield/issues/26) | [#27](https://github.com/team-blocks-lab/otter-shield/issues/27) | [#28](https://github.com/team-blocks-lab/otter-shield/issues/28)  — |
+| M4 박진혁 | [#29](https://github.com/team-blocks-lab/otter-shield/issues/29) | [#30](https://github.com/team-blocks-lab/otter-shield/issues/30) | [#31](https://github.com/team-blocks-lab/otter-shield/issues/31) | [#32](https://github.com/team-blocks-lab/otter-shield/issues/32) | [#33](https://github.com/team-blocks-lab/otter-shield/issues/33)  — |
+| M5 유은혜 | [#34](https://github.com/team-blocks-lab/otter-shield/issues/34) | [#35](https://github.com/team-blocks-lab/otter-shield/issues/35) | [#36](https://github.com/team-blocks-lab/otter-shield/issues/36) | [#37](https://github.com/team-blocks-lab/otter-shield/issues/37) | [#38](https://github.com/team-blocks-lab/otter-shield/issues/38)  [개발·CI/CD #8](https://github.com/team-blocks-lab/otter-shield/issues/8) · [AWS #12](https://github.com/team-blocks-lab/otter-shield/issues/12) |
+
+**M5 유은혜 개발 담당:** 공통 게시판·OTT/AI·Store의 설계·개발·자체 테스트와 CI/CD 작업은 #8, AWS Store 구축·연동·복원은 #12에서 관리합니다. M1/M2는 게시판 배포, M3는 OTT/AI 배포·미디어 인프라를 담당하며 공동 확인 결과를 연결합니다.
 
 ## 공동 작업·인계
 
@@ -53,6 +55,7 @@ Team Blocks · 최종 발표 2026.11.16 · **10/26 개정**
 
 | 일자 | 변경 내용 | 사유·영향 |
 |---|---|---|
+| 10/27 | M5 개발·AWS 담당 Issue 연결 보완 | 담당별 표에 #8·#12 추가. 개발 책임과 망별 배포 협업 구분 |
 | 10/26 | AS-IS 완료 10/28 → **10/30** | M3·M4 설계 변경과 구축 진척 반영. 공격 재현 목표 11/02로 조정 |
 | 10/26 | M3 ESXi 내부 Linux VM에서 Kubernetes 운영 | 노드망 연결·클러스터·DB·앱 배포 순서 반영 |
 | 10/26 | M4 **OPS·REPLICA·BACKUP·PROXY** 설계 확정 | Replica·ProxySQL·백업·별도 복원을 AS-IS에 포함 |
