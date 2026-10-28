@@ -1,6 +1,6 @@
-# 사내 게시판 API 검증
+# 사내 게시판 검증 캡처
 
-개발 PC에서 진행한 Postman 요청·응답 및 MySQL 조회 캡처.  
+개발 PC의 API·DB·화면 및 빌드 검증 캡처.  
 환경: Java 21 · Spring Boot 4.1.1 · MySQL 8.0.46
 
 | 항목 | 확인 내용 | 캡처 |
@@ -16,6 +16,12 @@
 | 익명 등록 제한 | 점심 게시글의 익명 등록 거절 · 400 | [익명 제한](06-anonymous-lunch-400.png) |
 | 로그아웃 | 로그인 세션 해제 · 204 | [로그아웃](07-logout-204.png) |
 | 미로그인 접근 | 로그아웃 후 게시글 조회 거절 · 401 | [접근 차단](08-unauthorized-401.png) |
+| 사진 등록 | 사진 첨부 게시글 등록 · 201 및 DB 이미지 키 저장 | [등록](09-post-image-create-201.png) · [DB](image-db-before-delete.png) |
+| 사진 조회 | 로그인 상태에서 첨부 사진 조회 · 200 | [조회](10-post-image-get-200.png) |
+| 사진 첨부 글 삭제 | 게시글 삭제 · 204, 삭제 후 사진 API · 404 | [삭제](11-post-image-delete-204.png) · [재조회](12-post-image-after-delete-404.png) |
+| 백엔드 테스트 | Gradle 테스트 실행 성공 | [테스트](backend-test.png) |
+| 프론트엔드 빌드 | Vite 빌드 성공 | [빌드](frontend-build.png) |
+| React 화면 | 게시글 피드 및 사진 표시 | [피드](ui-feed.png) · [사진](ui-photo.png) |
 
 최초 계정 설정 및 다른 직원의 수정·삭제 차단에 대한 API 캡처는 추가 예정. M1·M2 서버 배포 검증은 별도 진행.
 

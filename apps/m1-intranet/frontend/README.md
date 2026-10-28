@@ -1,16 +1,14 @@
-# React + Vite
+# 사내 게시판 프론트엔드
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React 19.3.0 · Vite 8.3.5
 
-Currently, two official plugins are available:
+```bash
+npm ci
+npm run dev
+```
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+개발 접속: `http://localhost:5173`. `/api` 요청은 로컬 백엔드 8080으로 전달됩니다.
 
-## React Compiler
+배포 빌드: `npm run build` → `dist/`. Nginx에서 정적 파일 제공 및 `/api` 프록시를 설정합니다.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+[DB·계정·실행 안내](../README.md) · [검증 결과](../docs/TEST_REPORT.md)

@@ -1,46 +1,49 @@
-# M1·M2 사내 게시판 — API 테스트 기록
+# 사내 게시판 테스트 및 인계
 
-개발: M5 · 배포 및 인프라 검증: M1/M2  
-대상: `apps/m1-intranet/backend` · Java 21 / Spring Boot 4.1.1 / MySQL 8.0.46
+기준일: 2026-10-28 · 개발 PC: Java 21 / Spring Boot 4.1.1 / MySQL 8.0.46  
+아래 결과는 개발자 로컬 실행 기록과 등록된 캡처 기준입니다. M1·M2 서버 검증은 별도입니다.
 
-> 실제 실행 결과만 완료로 기록. 테스트 계정·DB·서버 환경에 따라 결과 구분.
+## 개발 환경 검증
 
-## 확인된 개발 환경 및 테스트
+| 항목 | 결과 | 증빙 |
+|---|---|---|
+| 백엔드 테스트 | `gradlew.bat test` 성공 | [실행 결과](evidence/backend-test.png) |
+| 프론트엔드 빌드 | `npm run build` 성공 | [빌드 결과](evidence/frontend-build.png) |
+| React 화면 | 게시글 피드 및 첨부 사진 표시 확인 | [피드](evidence/ui-feed.png) · [사진](evidence/ui-photo.png) |
 
-| 검증 항목 | 확인 결과 | 증거 |
-| --- | --- | --- |
-| `PostServiceTest` 3개(타인 수정·삭제 차단, 익명 표시) | 통과(2026-10-27, 개발자 로컬 실행) | 캡처 추가 예정 |
-| Spring Boot 실행 및 MySQL 연결 | 성공(2026-10-27, 개발자 로컬 로그) | 캡처 추가 예정 |
-| `intranet` DB의 `employee`·`post` 생성, 샘플 직원 50명·글 2개 | 개발자 로컬 확인(2026-10-27) | 캡처 선택 |
-| Postman 로그인·세션·CRUD 전체 연동 | 검증 진행 중 | 미첨부 |
-| 공통 오류 응답(400/401/403/404) | 통합 재검증 전 | 미첨부 |
-| M1·M2 실제 서버 배포 | 미검증 | 미첨부 |
+## API 검증
 
-## Postman 통합 테스트 체크리스트
+기준 주소: `http://localhost:8080`. 로그인과 후속 요청은 같은 세션 쿠키를 사용합니다.
 
-기준 URL: `http://localhost:8080` (개발 PC 기준). 현재 검토용 브랜치의 게시글 경로는 **`/api/post`** (단수). 추후 코드 변경 시 문서와 함께 갱신.
+| 항목 | 요청 | 확인 결과 | 증빙 |
+|---|---|---|---|
+| 로그인·세션 조회 | POST `/api/auth/login`, GET `/api/auth/me` | 200 | [로그인](evidence/01-login-200.png) · [세션](evidence/01-session-me-200.png) |
+| 게시글 등록·조회 | POST / GET `/api/post` | 201 / 200, DB 저장 확인 | [등록](evidence/02-post-create-201.png) · [조회](evidence/03-post-feed-200.png) · [DB](evidence/03-post-db.png) |
+| 본인 글 수정 | PUT `/api/post/{postId}` | 204, 목록·DB 반영 | [수정](evidence/04-post-update-204.png) · [조회](evidence/04-post-update-feed-200.png) · [DB](evidence/04-post-update-db.png) |
+| 본인 글 삭제 | DELETE `/api/post/{postId}` | 204, DB 삭제 및 재삭제 404 | [삭제](evidence/05-post-delete-204.png) · [DB](evidence/05-post-delete-db.png) · [재삭제](evidence/05-post-delete-again-404.png) |
+| 공백 제목·점심 익명 등록 | POST `/api/post` | 400 | [제목 검사](evidence/06-blank-title-400.png) · [익명 제한](evidence/06-anonymous-lunch-400.png) |
+| 로그아웃·미로그인 접근 | POST `/api/auth/logout`, GET `/api/post` | 204 / 401 | [로그아웃](evidence/07-logout-204.png) · [접근 차단](evidence/08-unauthorized-401.png) |
+| 사진 첨부 등록 | POST `/api/post` (multipart) | 201, DB 이미지 키 저장 | [등록](evidence/09-post-image-create-201.png) · [DB](evidence/image-db-before-delete.png) |
+| 사진 조회 | GET `/api/post/{postId}/image` | 200, 사진 표시 | [사진 조회](evidence/10-post-image-get-200.png) |
+| 사진 첨부 글 삭제 | DELETE `/api/post/{postId}` | 204, 이후 사진 API 404 | [삭제](evidence/11-post-image-delete-204.png) · [재조회](evidence/12-post-image-after-delete-404.png) |
 
-| 항목 | 메서드·경로 | 기대 상태 | 실제 상태 | 증거 파일 |
-| --- | --- | --- | --- | --- |
-| 로그인 성공 및 세션 발급 | POST `/api/auth/login` | 200 | 미검증 | `evidence/api-login.png` |
-| 게시글 목록 조회 | GET `/api/post` | 200 | 미검증 | `evidence/api-post-list.png` |
-| 게시글 등록·DB 저장 | POST `/api/post` | 201 | 미검증 | `evidence/api-post-create.png` |
-| 본인 게시글 수정 | PUT `/api/post/{postId}` | 204 | 미검증 | `evidence/api-post-update.png` |
-| 본인 게시글 삭제 | DELETE `/api/post/{postId}` | 204 | 미검증 | `evidence/api-post-delete.png` |
-| 잘못된 입력(점심 글 익명 등록) | POST `/api/post` | 400 | 미검증 | `evidence/api-validation-400.png` |
-| 미로그인 요청 | GET `/api/post` | 401 | 미검증 | `evidence/api-unauthorized-401.png` |
-| 타인 게시글 수정·삭제 차단 | PUT/DELETE `/api/post/{postId}` | 403 | 미검증 | `evidence/api-forbidden-403.png` |
+최초 비밀번호·닉네임 설정 및 타인 글 수정·삭제 차단은 별도 API 캡처가 없습니다. 실제 업로드 파일 삭제는 404 응답만으로 확인할 수 없으므로 저장 폴더에서도 확인합니다.
 
-- 성공 기준: HTTP 상태, 응답 JSON 및 필요한 경우 MySQL 데이터 변화를 함께 확인
-- 세션 인증 검증: 로그인 요청과 후속 요청에서 동일한 세션 쿠키 사용
-- 권한 검증: 별도 테스트 계정과 해당 계정이 작성하지 않은 게시글 사용
-- 증거는 완료 항목 위주로 최소한만 첨부하고, 실제 결과·검증 일시·테스트 환경 기록
-- 캡처의 비밀번호, 쿠키(`JSESSIONID`), DB 접속정보 및 기타 비밀값 마스킹
-- M1·M2의 운영망 배포 증거는 각 담당자 인프라 기술서에서 관리하고 본 문서에는 인계·공통 API 검증 결과만 기재
+## M1·M2 서버 인계 확인
 
-## 증거 첨부 방법
+각 담당자가 자신의 서버에서 아래 항목을 확인하고 결과와 기록 링크를 남깁니다.
 
-1. 집에서 동일한 개발 브랜치로 이동 후 Postman 실행
-2. 실제 요청·응답을 확인하고 민감정보를 가린 PNG 저장
-3. `docs/evidence/`에 캡처 추가 및 위 표의 '실제 상태'·파일명 갱신
-4. GitHub Issue #8 댓글에 이 문서 링크와 남은 오류·다음 작업 기록
+- [ ] MySQL 테이블 및 앱 계정 준비, Spring Boot의 DB 연결 성공
+- [ ] 직원 계정 생성, 로그인 및 최초 비밀번호·닉네임 설정
+- [ ] React 화면에서 게시글 등록·조회·수정·삭제
+- [ ] 다른 직원의 수정·삭제 거절(403), 미로그인 접근 거절(401)
+- [ ] 사진 첨부·조회 및 글 삭제 후 실제 파일 삭제
+- [ ] 재시작 후 사진 유지, DB와 사진 폴더 백업 범위 확인
+- [ ] Nginx의 `/api` 프록시·사진 업로드 및 세션 유지 확인
+
+| 구역 | 담당 | 서버 검증 결과 | 기록 링크 |
+|---|---|---|---|
+| M1 | 유용수 | 미확인 | — |
+| M2 | 윤서영 | 미확인 | — |
+
+[설정·실행 안내](../README.md) · [전체 증빙](evidence/README.md)
