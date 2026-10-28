@@ -2,6 +2,7 @@ package com.otter.intranet.post;
 
 import com.otter.intranet.employee.Employee;
 import com.otter.intranet.employee.EmployeeRepository;
+import com.otter.intranet.image.ImageService;
 import com.otter.intranet.post.dto.PostFeedResponse;
 import com.otter.intranet.post.dto.PostUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,6 +25,8 @@ class PostServiceTest {
     private EmployeeRepository employeeRepository;
     private PostRepository postRepository;
     private PostService postService;
+    // 기존 Repository 모의 객체와 함께 추가
+    private ImageService imageService;
 
     @BeforeEach
     void setUp() {
@@ -33,7 +36,8 @@ class PostServiceTest {
 
         postService = new PostService(
                 employeeRepository,
-                postRepository
+                postRepository,
+                imageService
         );
     }
 

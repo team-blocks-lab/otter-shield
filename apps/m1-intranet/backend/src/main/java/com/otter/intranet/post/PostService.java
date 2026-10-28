@@ -2,19 +2,26 @@ package com.otter.intranet.post;
 
 import com.otter.intranet.employee.Employee;
 import com.otter.intranet.employee.EmployeeRepository;
+import com.otter.intranet.image.ImageService;
 import com.otter.intranet.post.dto.PostCreateRequest;
 import com.otter.intranet.post.dto.PostFeedResponse;
 import com.otter.intranet.post.dto.PostResponse;
 import com.otter.intranet.post.dto.PostUpdateRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -22,6 +29,7 @@ public class PostService {
 
     private final EmployeeRepository employeeRepository;
     private final PostRepository postRepository;
+    private final ImageService imageService;
 
     public PostFeedResponse getFeed(
             Long currentEmployeeId,
@@ -38,8 +46,7 @@ public class PostService {
             );
         }
 
-        // 생성일 기준 최신순 정렬
-        // 생성 시각이 같은 게시글은 식별자 역순으로 정렬
+        // 생성일 기준 최신순 정렬 및 동일 시각 게시글의 순서 고정
         PageRequest pageable = PageRequest.of(
                 page,
                 size,
@@ -67,17 +74,29 @@ public class PostService {
             Long currentEmployeeId,
             PostCreateRequest request
     ) {
+        // 기존 JSON 등록 요청과 사진 미첨부 등록 방식 유지
+        return createPost(currentEmployeeId, request, null);
+    }
+
+    @Transactional
+    public Long createPost(
+            Long currentEmployeeId,
+            PostCreateRequest request,
+            MultipartFile image
+    ) {
         // 클라이언트 입력 대신 로그인 직원으로 작성자 지정
         Employee author = requireReadyEmployee(currentEmployeeId);
 
-        // 업로드 기능 연동 전 임의 이미지 키의 저장 차단
+        // 다른 게시글의 사진 연결 및 임의 파일 경로 지정 차단
         if (request.imageKey() != null) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "사진 첨부 기능은 아직 준비 중입니다."
+                    "사진 저장 이름은 직접 지정할 수 없습니다."
             );
         }
 
+        // 파일 저장 전 게시글 입력값 검증
+        // 유효하지 않은 게시글로 인한 불필요한 파일 생성 방지
         Post post = new Post(
                 author,
                 request.category(),
@@ -87,7 +106,45 @@ public class PostService {
                 null
         );
 
+        if (image != null && !image.isEmpty()) {
+            requireActiveTransaction();
+
+            String imageKey = imageService.save(image);
+
+            // DB 저장 실패 또는 커밋 실패 시 신규 사진 정리
+            registerImageCleanupOnRollback(imageKey);
+
+            post = new Post(
+                    author,
+                    request.category(),
+                    request.title(),
+                    request.content(),
+                    request.anonymous(),
+                    imageKey
+            );
+        }
+
         return postRepository.save(post).getPostId();
+    }
+
+    public Resource getPostImage(
+            Long currentEmployeeId,
+            Long postId
+    ) {
+        requireReadyEmployee(currentEmployeeId);
+
+        Post post = findPost(postId);
+
+        if (post.getImageKey() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "첨부된 사진이 없습니다."
+            );
+        }
+
+        // 게시글에 연결된 저장 이름을 통한 사진 조회
+        // 클라이언트의 파일 경로 직접 지정 방지
+        return imageService.load(post.getImageKey());
     }
 
     @Transactional
@@ -102,7 +159,7 @@ public class PostService {
         requireAuthor(post, currentEmployeeId);
 
         // 작성자 확인 후 변경 가능한 필드만 수정
-        // 관리 중인 엔티티의 변경 감지를 통한 DB 반영
+        // 기존 사진 유지 및 엔티티 변경 감지를 통한 DB 반영
         post.update(
                 request.category(),
                 request.title(),
@@ -121,8 +178,63 @@ public class PostService {
         Post post = findPost(postId);
         requireAuthor(post, currentEmployeeId);
 
-        // 작성자 확인을 마친 게시글 삭제
+        String imageKey = post.getImageKey();
+
+        if (imageKey != null) {
+            requireActiveTransaction();
+            registerImageCleanupAfterCommit(imageKey);
+        }
+
+        // DB 삭제 확정 이후 사진 삭제를 위한 게시글 삭제 요청
         postRepository.delete(post);
+    }
+
+    private void registerImageCleanupOnRollback(String imageKey) {
+        TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronization() {
+                    @Override
+                    public void afterCompletion(int status) {
+                        if (status == STATUS_ROLLED_BACK) {
+                            deleteImageSafely(imageKey);
+                        }
+                    }
+                }
+        );
+    }
+
+    private void registerImageCleanupAfterCommit(String imageKey) {
+        TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronization() {
+                    @Override
+                    public void afterCommit() {
+                        deleteImageSafely(imageKey);
+                    }
+                }
+        );
+    }
+
+    private void deleteImageSafely(String imageKey) {
+        try {
+            imageService.delete(imageKey);
+        } catch (RuntimeException exception) {
+            // DB 처리 결과와 파일 정리 실패의 분리
+            // 잔여 파일 확인을 위한 저장 이름 및 오류 기록
+            log.error(
+                    "사진 파일 정리 실패: imageKey={}",
+                    imageKey,
+                    exception
+            );
+        }
+    }
+
+    private void requireActiveTransaction() {
+        // 파일 정리 시점을 DB 처리 결과에 연결하기 위한 트랜잭션 확인
+        if (!TransactionSynchronizationManager.isActualTransactionActive()
+                || !TransactionSynchronizationManager.isSynchronizationActive()) {
+            throw new IllegalStateException(
+                    "사진 처리는 활성 트랜잭션 안에서 실행해야 합니다."
+            );
+        }
     }
 
     private Employee requireReadyEmployee(Long employeeId) {
@@ -177,6 +289,11 @@ public class PostService {
                 ? "익명"
                 : post.getAuthor().getNickname();
 
+        // 서버의 실제 저장 경로 대신 인증을 거치는 조회 API 제공
+        String imageUrl = post.getImageKey() == null
+                ? null
+                : "/api/post/" + post.getPostId() + "/image";
+
         return new PostResponse(
                 post.getPostId(),
                 post.getCategory(),
@@ -184,7 +301,7 @@ public class PostService {
                 post.getContent(),
                 displayName,
                 post.isAnonymous(),
-                null,
+                imageUrl,
                 post.isWrittenBy(currentEmployeeId),
                 post.getCreatedAt(),
                 post.getUpdatedAt()
