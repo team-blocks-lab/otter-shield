@@ -11,3 +11,4 @@
 *.key
 *.p12
 *.jks
+apps/m1-intranet/backend/uploads/

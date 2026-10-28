@@ -160,4 +160,6 @@ INSERT INTO employee(employee_number,password_hash,nickname,first_login)
 SELECT 'TEST050','!TEST_ONLY_NO_LOGIN','가상직원50',FALSE
 WHERE NOT EXISTS(SELECT 1 FROM employee WHERE employee_number='TEST050');
 COMMIT;
-SELECT COUNT(*) AS test_employee_count FROM employee WHERE employee_number REGEXP '^TEST(00[1-9]|0[1-4][0-9]|050)$';
+SELECT COUNT(*) AS test_employee_count
+FROM employee
+WHERE employee_number REGEXP '^TEST(00[1-9]|0[1-4][0-9]|050)$';

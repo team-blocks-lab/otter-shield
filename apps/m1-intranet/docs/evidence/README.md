@@ -1,0 +1,28 @@
+# 사내 게시판 검증 캡처
+
+개발 PC의 API·DB·화면 및 빌드 검증 캡처.  
+환경: Java 21 · Spring Boot 4.1.1 · MySQL 8.0.46
+
+| 항목 | 확인 내용 | 캡처 |
+|---|---|---|
+| 로그인 | 직원 계정 인증 및 직원 정보 반환 · 200 | [로그인](01-login-200.png) |
+| 세션 유지 | 비밀번호 재전송 없이 로그인 직원 조회 · 200 | [세션 조회](01-session-me-200.png) |
+| 게시글 등록 | 게시글 번호 발급 · 201, 작성자 ID와 내용의 DB 저장 | [등록](02-post-create-201.png) · [DB](03-post-db.png) |
+| 피드 조회 | 등록 글 조회, 익명 표시 및 본인 글 구분 · 200 | [목록](03-post-feed-200.png) |
+| 게시글 수정 | 제목·내용·익명 여부 변경 · 204, 조회 및 DB 반영 | [수정](04-post-update-204.png) · [목록](04-post-update-feed-200.png) · [DB](04-post-update-db.png) |
+| 게시글 삭제 | 삭제 요청 · 204, DB 잔여 건수 확인 | [삭제](05-post-delete-204.png) · [DB](05-post-delete-db.png) |
+| 삭제 글 재요청 | 존재하지 않는 게시글의 삭제 요청 거절 · 404 | [재요청](05-post-delete-again-404.png) |
+| 제목 입력 검사 | 공백 제목의 등록 거절 · 400 | [입력 오류](06-blank-title-400.png) |
+| 익명 등록 제한 | 점심 게시글의 익명 등록 거절 · 400 | [익명 제한](06-anonymous-lunch-400.png) |
+| 로그아웃 | 로그인 세션 해제 · 204 | [로그아웃](07-logout-204.png) |
+| 미로그인 접근 | 로그아웃 후 게시글 조회 거절 · 401 | [접근 차단](08-unauthorized-401.png) |
+| 사진 등록 | 사진 첨부 게시글 등록 · 201 및 DB 이미지 키 저장 | [등록](09-post-image-create-201.png) · [DB](image-db-before-delete.png) |
+| 사진 조회 | 로그인 상태에서 첨부 사진 조회 · 200 | [조회](10-post-image-get-200.png) |
+| 사진 첨부 글 삭제 | 게시글 삭제 · 204, 삭제 후 사진 API · 404 | [삭제](11-post-image-delete-204.png) · [재조회](12-post-image-after-delete-404.png) |
+| 백엔드 테스트 | Gradle 테스트 실행 성공 | [테스트](backend-test.png) |
+| 프론트엔드 빌드 | Vite 빌드 성공 | [빌드](frontend-build.png) |
+| React 화면 | 게시글 피드 및 사진 표시 | [피드](ui-feed.png) · [사진](ui-photo.png) |
+
+최초 계정 설정 및 다른 직원의 수정·삭제 차단에 대한 API 캡처는 추가 예정. M1·M2 서버 배포 검증은 별도 진행.
+
+[백엔드 코드](../../backend/) · [테스트 기록](../TEST_REPORT.md)
