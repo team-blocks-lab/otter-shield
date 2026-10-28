@@ -15,14 +15,14 @@ OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 �
 | M1 한국 본사 | 유용수 | GNS3·UTM·부서망 구성, 사내 게시판 배포, VPN |
 | M2 독일 본사 | 윤서영 | 본사와 같은 업무망 구성, 게시판 배포, Wazuh 탐지·대응 |
 | M3 한국 서비스 | 홍은서 · PL | 가상화·Kubernetes·DB 구성, OTT·AI 서비스 배포, 인프라 통합 검토 |
-| M4 백업·DR | 박진혁 | DB 복제·백업, S3 보관, 격리 환경 복원 |
+| M4 백업·DR | 박진혁 | DB 복제·ProxySQL, 내부 백업 서버 보관, 별도 DB 복원 |
 | M5 캐나다 지사 | 유은혜 · PM | 지사망·VPN, 전체 앱 설계·개발, AI·AWS Store, 일정 관리 |
 
 **앱 개발:** 유은혜 — 사내 게시판·OTT/AI·Store 설계, 구현, 자체 검증. 서버 배포와 DB 운영은 각 구역 담당자와 진행합니다.
 
 한국·독일 업무망은 같은 게시판 코드를 사용하고 DB·계정·환경설정은 분리합니다. 독일망에는 Wazuh를 적용해 탐지·대응 결과를 비교할 계획입니다.
 
-[망별 Topology](design/topology/README.md) · [ERD·클래스 다이어그램](design/README.md)
+[전체망·망별 Topology](design/topology/README.md) · [ERD·클래스 다이어그램](design/README.md)
 
 ## 구축·보안 검증 계획
 
@@ -45,7 +45,7 @@ OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 �
 | 네트워크·가상화 | GNS3, VMware/vSphere, Sophos UTM 9, VyOS |
 | 보안·컨테이너·클라우드 | Wazuh, Kubernetes, AWS |
 | 앱 개발 | React, Spring Boot, FastAPI |
-| 배포 자동화 | GitHub Actions, Argo CD |
+| 배포 자동화 | 선정 보류: GitHub Actions + Argo CD / Jenkins 기반 구성 |
 
 ## 프로젝트 자료
 

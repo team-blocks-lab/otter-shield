@@ -81,5 +81,4 @@ INSERT INTO member(name,login_id,password_hash)
 SELECT '가상회원20','test_member20','!TEST_ONLY_NO_LOGIN'
 WHERE NOT EXISTS(SELECT 1 FROM member WHERE login_id='test_member20');
 COMMIT;
-SELECT COUNT(*) AS test_member_count FROM member WHERE login_id REGEXP '^test_member(0[1-9]|1[0-9]|20)
-;
+SELECT COUNT(*) AS test_member_count FROM member WHERE login_id REGEXP '^test_member(0[1-9]|1[0-9]|20)$';
