@@ -1,28 +1,58 @@
-# M5 | Store 웹
+# M5 | Store 환경 설정
 
-상태: 실행 코드 등록 전
+개발·배포: M5 유은혜 · 캐나다 AWS  
+현재 실행 코드·SQL 등록 전. 아래 버전은 개발 기준.
 
-코드 개발·AWS 배포: M5 유은혜
+## 버전
 
-캐나다 고객용 Store 코드를 이 폴더에 등록합니다. OTT 메인과 별도의 앱으로 구분하며, 캐나다 사내 업무망과도 구분합니다.
+| 구성 | 적용 기준 |
+|---|---|
+| Java | Temurin JDK 21 |
+| Spring Boot | 4.1.1 |
+| MySQL | 8.0.46 기준 · RDS 엔진 버전은 배포 시 확정 |
+| Node.js | 22.12 이상 |
+| React / React DOM | 19.3.0 |
+| EKS / Nginx | 배포 환경에 맞는 버전 |
 
-| 구성 | 코드 위치 | 실행·배포 대상 |
-|---|---|---|
-| Store React 화면 | [frontend](frontend/README.md) | 캐나다 EKS |
-| Store Spring Boot API | [backend](backend/README.md) | 캐나다 EKS·비공개 RDS 연동 |
+## 회원 계정
 
-## 배포·검증 계획
+| 항목 | 설정 |
+|---|---|
+| 등록 방식 | Store 자체 회원가입 화면 · 구현 예정 |
+| OTT 연동 | 회원가입·로그인 별도 운영 |
+| 비밀번호 | BCrypt 해시 저장 |
+| 회원 DB | Store 전용 회원 정보 관리 · 최종 컬럼은 구현 시 확정 |
 
-GitHub Actions에서 빌드·검사·이미지 저장 후 배포 설정을 갱신하고, 기존 EKS 내부 Argo CD가 반영하는 계획입니다. 고객은 공개 ALB로 접속하며 사내 VPN을 사용하지 않습니다.
+## DB
 
-실행 코드 등록 후 실제 버전·명령어·환경변수 이름·DB 준비·상품 조회·모의 주문·접근 권한·배포 결과를 기록합니다. 현재 코드나 CI/CD가 구현 완료된 상태는 아닙니다.
+| 항목 | 설정 |
+|---|---|
+| DB 서버 | 비공개 Amazon RDS for MySQL |
+| DB명·SQL | 코드 등록 시 확정 |
+| 데이터 | 회원·상품·장바구니·주문 |
+| 앱 DB 계정 권한 | Store DB의 SELECT·INSERT·UPDATE·DELETE |
+| 접근 조건 | EKS의 Store API에서 RDS 접속 허용 |
 
-## 복구 검증
+## 환경변수
 
-[AWS 연결 #12](https://github.com/team-blocks-lab/otter-shield/issues/12)에서 11/09–11/10 RDS 백업/스냅샷을 별도 DB로 복원하고 데이터를 확인합니다. 임시 복원 리소스의 비용·정리도 기록합니다. S05는 한국 격리 Test DB 접근 시험이며 Store RDS와 구분합니다.
+Spring Boot 구현에 반영할 설정 이름.
 
-[서비스별 코드 안내](../README.md) · [프로젝트 첫 화면](../../README.md)
+| 이름 | 값 |
+|---|---|
+| `SPRING_DATASOURCE_URL` | `jdbc:mysql://<RDS주소>:3306/<Store DB명>` |
+| `SPRING_DATASOURCE_USERNAME` | 앱 DB 계정 |
+| `SPRING_DATASOURCE_PASSWORD` | DB 비밀번호 |
+| `SERVER_PORT` | `8080` |
 
-## 설계 자료
+## 실행·배포 조건
 
-[Store ERD](../../design/erd/store/README.md) · [Store 클래스 다이어그램](../../design/classdiagram/store/README.md)
+| 대상 | 설정 |
+|---|---|
+| React / Spring Boot | 개별 컨테이너 · 캐나다 EKS 배포 |
+| 웹 연결 | 공개 ALB · HTTPS · 웹과 `/api` 전달 경로 |
+| DB 연결 | EKS → 비공개 RDS 3306 |
+| 배포 | GitHub Actions · 이미지 저장소 · Argo CD 연동 |
+| 상품 데이터 | 상품 정보·이미지 경로 사전 준비 |
+| 백업 | RDS 백업·스냅샷 및 복원 환경 |
+
+[앱 소개](../README.md) · [프론트](frontend/README.md) · [백엔드](backend/README.md)

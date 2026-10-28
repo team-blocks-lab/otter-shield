@@ -1,13 +1,10 @@
-# M3 | OTT Spring Boot API
+# OTT | Backend
 
-상태: 앱 코드 등록 전
+| 항목 | 내용 |
+|---|---|
+| 상태 | 실행 코드 등록 전 |
+| 기술 | Java 21 · Spring Boot 4.1.1 · JPA 기준 |
+| 배포 | M3 Kubernetes |
+| 연결 | MySQL `ott` · FastAPI·미디어 CDN |
 
-## 용도
-
-이 폴더에는 M5가 개발한 Spring Boot API의 실행 가능한 원본 코드를 둡니다. M3 등 연동 담당자가 이 코드를 내려받아 배포·시험합니다. 실행 방법과 필요한 환경변수 이름은 코드가 올라올 때 이 문서에 작성합니다. 비밀값은 등록하지 않습니다.
-
-개발 과정·실습 결과의 상세 기록은 Notion, 진행 현황은 해당 Issue에 남깁니다.
-
-서비스 구분: 이 폴더는 M3 OTT 메인 서비스용입니다. 사내 게시판은 `apps/m1-intranet`, Store는 `apps/m5-store`에서 확인합니다.
-
-[OTT 구성 안내](../README.md) · [서비스별 코드 안내](../../README.md)
+[앱 환경 설정](../README.md) · [앱 소개·UI](../../README.md)

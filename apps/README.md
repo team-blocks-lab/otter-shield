@@ -1,36 +1,54 @@
-# OTTer Shield | 개발 코드 안내
+# OTTer Shield | Applications
 
-팀명 Team Blocks · 보안 컨설팅 회사 NetBlocks · 가상 OTT 고객사 OTTer
+| 앱 | 용도 | 배포 |
+|---|---|---|
+| [사내 게시판](m1-intranet/README.md) | 직원 간 칭찬·점심 이야기 공유 | M1 한국 · M2 독일 |
+| [OTT 메인](m3-ott/README.md) | 영상 탐색·재생 | M3 한국 API·DB · AWS 정적 웹 |
+| [Store](m5-store/README.md) | 굿즈 조회·장바구니·모의 주문 | M5 캐나다 AWS |
 
-프로젝트명: OTTer Shield — 한국·캐나다 OTT 하이브리드 인프라 구축 및 보안 컨설팅
+## 검증 자료
 
-세 웹 서비스의 코드를 배포 대상별로 구분합니다. 모든 앱 코드 개발은 M5 유은혜가 담당하며, M1·M3·M5 표기는 개발자가 아닌 배포 대상입니다.
+사내 게시판 개발 PC 검증 · 2026-10-28
 
-| 서비스 | 폴더 | 포함할 코드 | 배포 담당·범위 |
-|---|---|---|---|
-| M1·M2 사내 게시판 | [m1-intranet](m1-intranet/README.md) | 한국·독일 공통 게시판 앱 | M1 한국·M2 독일 배포, M5 개발·연동 지원 |
-| M3 OTT 메인 | [m3-ott](m3-ott/README.md) | React·Spring Boot·FastAPI/AI | M3 한국 앱·DB 배포, M5 코드·AWS 정적 웹 |
-| M5 Store | [m5-store](m5-store/README.md) | Store React·Spring Boot | M5 캐나다 AWS/EKS 배포 |
+| 확인 항목 | 캡처 |
+|---|---|
+| 백엔드 테스트 · 프론트엔드 빌드 | [테스트 성공](m1-intranet/docs/evidence/backend-test.png) · [빌드 성공](m1-intranet/docs/evidence/frontend-build.png) |
+| 로그인 · 세션 유지 | [로그인 200](m1-intranet/docs/evidence/01-login-200.png) · [세션 조회 200](m1-intranet/docs/evidence/01-session-me-200.png) |
+| 게시글 등록 · 수정 · 삭제 | [등록 201](m1-intranet/docs/evidence/02-post-create-201.png) · [수정 204](m1-intranet/docs/evidence/04-post-update-204.png) · [삭제 204](m1-intranet/docs/evidence/05-post-delete-204.png) |
+| 입력 검사 · 접근 제한 | [공백 제목 400](m1-intranet/docs/evidence/06-blank-title-400.png) · [미로그인 401](m1-intranet/docs/evidence/08-unauthorized-401.png) |
+| 사진 첨부 · 조회 · 삭제 후 접근 | [등록 201](m1-intranet/docs/evidence/09-post-image-create-201.png) · [조회 200](m1-intranet/docs/evidence/10-post-image-get-200.png) · [삭제 후 404](m1-intranet/docs/evidence/12-post-image-after-delete-404.png) |
 
-게시판 코드는 기존 `m1-intranet` 폴더를 M1·M2가 공유합니다. 독일용 앱 사본은 만들지 않으며, 국가별 DB·계정·환경변수·DNS를 분리합니다. 폴더 이름의 M1은 기존 경로를 유지한 것입니다.
+[전체 증빙](m1-intranet/docs/evidence/README.md) · [테스트 기록·서버 인계 확인](m1-intranet/docs/TEST_REPORT.md)
 
-## 내려받은 뒤 확인할 위치
+## 사내 게시판 · OTTer Inside
 
-1. 저장소 첫 화면의 Code → Download ZIP으로 전체 파일을 내려받습니다.
-2. 압축 해제 후 `otter-shield-main/apps` 폴더에서 배포할 서비스 폴더를 선택합니다.
-3. 그 서비스의 README에서 필요한 구성 요소와 실행 방법을 확인합니다.
-4. 현재는 안내 문서만 있으며, 실행 코드는 아직 등록되지 않았습니다. 빈 폴더를 실행 가능한 앱으로 판단하지 않습니다.
+![사내 게시판 메인 화면](m1-intranet/docs/evidence/ui-feed.png)
 
-OTT의 `frontend/`, `backend/`, `ai-service/`는 `apps/m3-ott/` 아래에서 확인합니다.
+- 직원 번호 로그인 및 최초 비밀번호·닉네임 설정
+- 칭찬·점심 게시글 등록, 본인 글 수정·삭제
+- 칭찬 글 익명 작성, JPEG·PNG 사진 1장 첨부
+- 피드형 목록과 페이지 이동, 현재 페이지 내 분류·검색
 
-## 코드 등록·배포 시 기록할 내용
+[환경 설정](m1-intranet/README.md) · [사진 첨부 화면](m1-intranet/docs/evidence/ui-photo.png) · [검증 결과](m1-intranet/docs/TEST_REPORT.md)
 
-서비스별 README에 실제 버전, 실행·빌드 명령, 환경변수 이름, DB 준비, 검증된 커밋·이미지 버전을 기록합니다. 비밀값은 등록하지 않습니다.
+## OTT 메인
 
-M3·M5는 GitHub Actions + Argo CD 배포 계획을 사용합니다. CI 경로 조건·빌드 위치와 Argo CD 대상 앱을 서비스별로 분리하여, Store 변경이 한국 OTT 배포를 잘못 실행하지 않도록 설정·시험합니다. S3 정적 React 배포는 Kubernetes 배포와 구분합니다. M1·M2 게시판의 배포 방식은 앱 실행 환경을 확인한 뒤 정합니다.
+메인 화면: 미등록 · 아래 기능은 개발 예정 범위입니다.
 
-## 인계 기준
+- 회원가입·로그인
+- 영상 목록·상세 정보 조회
+- 로그인 회원의 영상 재생
+- 한국어·영어 자막 제공 및 AI 자막 연동
 
-실제 버전·빌드/실행 명령·DB 스키마/가짜 초기 데이터·환경변수 이름·건강 확인 경로·커밋/이미지·되돌리기 절차를 서비스 README에 채운 뒤 상대 배포 담당이 확인합니다. 10/23까지 게시판 실행 방식·이미지 저장소·Git/이미지 출구·승인 관리 경로를 결정합니다.
+[환경 설정](m3-ott/README.md) · [ERD](../design/erd/ott/README.md) · [클래스 다이어그램](../design/classdiagram/ott/README.md)
 
-[프로젝트 첫 화면](../README.md)
+## Store
+
+메인 화면: 미등록 · 아래 기능은 개발 예정 범위입니다.
+
+- Store 자체 회원가입·로그인
+- 굿즈 목록·상세 조회
+- 장바구니 추가·수량 변경·삭제
+- 전체 또는 선택 상품 모의 주문, 배송 정보 입력 및 주문 내역 조회
+
+[환경 설정](m5-store/README.md) · [ERD](../design/erd/store/README.md) · [클래스 다이어그램](../design/classdiagram/store/README.md)

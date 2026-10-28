@@ -1,14 +1,10 @@
-# 사내 게시판 프론트엔드
+# 사내 게시판 | Frontend
 
-React 19.3.0 · Vite 8.3.5
+| 항목 | 내용 |
+|---|---|
+| 기술 | React 19.3.0 · Vite 8.3.5 |
+| 개발 주소 | `http://localhost:5173` |
+| API 연결 | `/api` → `http://localhost:8080` · Vite 개발 프록시 |
+| 배포 산출물 | `dist/` · Nginx 정적 파일 제공 |
 
-```bash
-npm ci
-npm run dev
-```
-
-개발 접속: `http://localhost:5173`. `/api` 요청은 로컬 백엔드 8080으로 전달됩니다.
-
-배포 빌드: `npm run build` → `dist/`. Nginx에서 정적 파일 제공 및 `/api` 프록시를 설정합니다.
-
-[DB·계정·실행 안내](../README.md) · [검증 결과](../docs/TEST_REPORT.md)
+[앱 환경 설정](../README.md) · [앱 소개·UI](../../README.md)
