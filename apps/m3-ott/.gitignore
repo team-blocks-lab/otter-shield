@@ -1,0 +1,9 @@
+# IntelliJ 개인 설정
+.idea/
+**/.idea/
+*.iml
+
+# OTT 영상 원본 - GitHub 업로드 제외
+frontend/public/media/*.mp4
+frontend/public/media/*.mov
+frontend/public/media/*.mkv
