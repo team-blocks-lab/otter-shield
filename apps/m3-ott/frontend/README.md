@@ -1,7 +1,8 @@
 # M3 | OTT React 프런트엔드
 
-**상태**: React 코드 등록·M5 로컬 통합 검증 완료 / AWS S3·CloudFront 배포는 미완료.  
-개발·AWS 정적 웹: M5 유은혜 · 한국 API/DB/Kubernetes: M3 홍은서.
+**상태**: React 코드 등록·M5 로컬 통합 검증 완료 / **M3 OTT 웹 운영 배포는 미완료**.  
+개발·인계: M5 유은혜 · **React 웹 배포 및 운영: M3 홍은서** · Spring Boot API/DB/Kubernetes: M3 홍은서.  
+**OTT MP4 영상 S3 업로드·CloudFront CDN 연결 및 캐나다 Store 배포: M5 유은혜.**
 
 ## 실행 환경
 
@@ -38,11 +39,11 @@ npm run build
 
 M5 PC에서 빌드 성공 확인, 생성물 `dist/`. Vite 설정에서 로컬 MP4는 빌드 결과에서 제외합니다.
 
-## 정적 웹 배포 — Jenkins 적용 예정 (미구축)
+## M3 React 웹 배포 — Jenkins 적용 예정 (미구축)
 
-M5가 React를 AWS S3·CloudFront에 배포하며, **Jenkins 사용은 팀 결정 사항**입니다. Jenkins Job/Jenkinsfile·AWS 자격 증명·실제 배포 실행은 아직 확인되지 않았습니다. 정적 웹 빌드 및 S3 동기화·CloudFront 캐시 처리는 Jenkins 파이프라인에서 별도로 구성·검증합니다.
+**M3 홍은서가 OTT React 웹 배포를 담당**합니다. 팀에서 선택한 자동화 도구는 Jenkins입니다. Jenkins Job/Jenkinsfile 및 React의 실제 호스팅 방식(정적 웹 서버/스토리지 등)은 M3 서비스망 구성에 따라 설정·검증해야 합니다. **M5 유은혜는 OTT React 배포 담당자가 아니며, OTT MP4 영상 S3 업로드·CloudFront CDN 연결과 캐나다 Store 배포를 담당**합니다. Jenkins와 운영 웹 배포는 아직 확인되지 않았습니다.
 
-**주의**: 프로덕션 S3/CloudFront에는 Vite 개발 서버의 프록시 기능이 없습니다. `/api`의 HTTPS 백엔드 라우팅, 세션 쿠키/CORS, 실제 미디어 S3/CloudFront 주소가 준비돼야 합니다. 운영 `VITE_MEDIA_BASE_URL`과 `VITE_API_BASE_URL`은 배포 환경에 맞춰 빌드 시 설정합니다. 자격 증명과 비밀값을 Git에 올리지 마세요.
+**주의**: 프로덕션에 배포한 정적 React 앱에는 Vite 개발 서버의 프록시 기능이 없습니다. `/api`의 HTTPS 백엔드 라우팅, 세션 쿠키/CORS, M5가 제공할 실제 MP4 S3/CloudFront 미디어 주소가 준비돼야 합니다. 운영 `VITE_MEDIA_BASE_URL`과 `VITE_API_BASE_URL`은 M3가 M5의 미디어 CDN 주소 및 M3 API 경로에 맞춰 빌드 시 설정합니다. 자격 증명과 비밀값을 Git에 올리지 마세요.
 
 ## 문서
 
