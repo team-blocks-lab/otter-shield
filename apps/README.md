@@ -9,7 +9,7 @@
 | 서비스 | 폴더 | 포함할 코드 | 배포 담당·범위 |
 |---|---|---|---|
 | M1·M2 사내 게시판 | [m1-intranet](m1-intranet/README.md) | 한국·독일 공통 게시판 앱 | M1 한국·M2 독일 배포, M5 개발·연동 지원 |
-| M3 OTT 메인 | [m3-ott](m3-ott/README.md) | React·Spring Boot·FastAPI/AI | M3 한국 앱·DB 배포, M5 코드·AWS 정적 웹 |
+| M3 OTT 메인 | [m3-ott](m3-ott/README.md) | React·Spring Boot·FastAPI/AI | M5 React·API 개발, M3 OTT React 웹·API·DB 배포, M5 OTT 영상 S3/CloudFront CDN |
 | M5 Store | [m5-store](m5-store/README.md) | Store React·Spring Boot | M5 캐나다 AWS/EKS 배포 |
 
 게시판 코드는 기존 `m1-intranet` 폴더를 M1·M2가 공유합니다. 독일용 앱 사본은 만들지 않으며, 국가별 DB·계정·환경변수·DNS를 분리합니다. 폴더 이름의 M1은 기존 경로를 유지한 것입니다.
@@ -27,7 +27,7 @@ OTT의 `frontend/`, `backend/`, `ai-service/`는 `apps/m3-ott/` 아래에서 확
 
 서비스별 README에 실제 버전, 실행·빌드 명령, 환경변수 이름, DB 준비, 검증된 커밋·이미지 버전을 기록합니다. 비밀값은 등록하지 않습니다.
 
-**팀 최신 결정: M3 OTT 배포 자동화는 Jenkins 기준으로 진행합니다.** M3 Spring Boot 컨테이너 빌드·Kubernetes 배포와 M5 React S3/CloudFront 정적 배포는 별도 Jenkins 파이프라인으로 구분합니다. 이 문서는 도구 선정 사항을 반영한 것이며 Jenkins 구축·실행 성공을 의미하지 않습니다. M5 Store 등 다른 서비스의 Jenkins 전환 범위는 추가 합의가 필요합니다. 빌드 경로와 대상 배포 환경을 분리해 Store 변경이 한국 OTT에 잘못 배포되지 않도록 검증합니다. S3 정적 React 배포는 Kubernetes 배포와 구분합니다. M1·M2 게시판의 배포 방식은 앱 실행 환경을 확인한 뒤 정합니다.
+**팀 최신 결정: M3 OTT 배포 자동화는 Jenkins 기준으로 진행합니다.** M3 홍은서가 OTT React 웹과 Spring Boot API·DB의 배포를 담당합니다. OTT React 정적 웹의 실제 배치 위치(정적 호스팅·웹 서버 등)는 M3 인프라 구성에 맞춰 확정하고, API의 Kubernetes 배포와 작업을 구분합니다. M5 유은혜는 OTT React·API 코드를 개발·인계하고, 별도로 캐나다 Store AWS 배포 및 OTT MP4 영상의 S3 업로드·CloudFront CDN 연동을 담당합니다. Jenkinsfile·Job·배포 검증은 아직 완료되지 않았으며, Store 등 다른 서비스의 Jenkins 전환 범위는 별도 합의 사항입니다. 서비스별 배포 경로를 분리해 OTT와 Store가 서로 잘못 배포되지 않도록 검증합니다. M1·M2 게시판의 배포 방식은 해당 앱 환경을 확인한 뒤 정합니다.
 
 ## 인계 기준
 
