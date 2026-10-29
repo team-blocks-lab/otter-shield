@@ -75,8 +75,8 @@ java -jar build/libs/ott-0.0.1-SNAPSHOT.jar
 
 ## M3 인계 주의사항
 
-- 팀 결정: **M3 배포 자동화 도구는 Jenkins**. 계획 파이프라인: Git 체크아웃 → Gradle 테스트/bootJar → Docker 이미지 빌드·레지스트리 Push → Kubernetes 적용·롤아웃/스모크 테스트. Jenkinsfile, Dockerfile, Kubernetes Deployment/Service, Secret 등은 아직 이 폴더에 준비되지 않았습니다. ** Java 프로젝트 실행 가능과 K8s 배포 완료는 다릅니다.
-- 프런트엔드는 [별도 안내](../frontend/README.md)에 따라 M5가 정적 웹(S3·CloudFront)에 배포; 이 백엔드는 M3 서버에 배포합니다.
+- 팀 결정: **M3 배포 자동화 도구는 Jenkins**. 계획 파이프라인: Git 체크아웃 → Gradle 테스트/bootJar → Docker 이미지 빌드·레지스트리 Push → Kubernetes 적용·롤아웃/스모크 테스트. Jenkinsfile, Dockerfile, Kubernetes Deployment/Service, Secret 등은 아직 이 폴더에 준비되지 않았습니다. Java 프로젝트 실행 가능과 K8s 배포 완료는 다릅니다.
+- 프런트엔드는 [별도 안내](../frontend/README.md)에 따라 **M3 홍은서가 배포**하며, 이 Spring Boot API·DB도 M3 담당입니다. **M5 유은혜는 OTT 코드 개발·인계, OTT MP4 영상 S3/CloudFront CDN 구축, 별도 Store 배포**를 담당합니다.
 - Vite 개발 프록시는 개발 PC에서만 적용됩니다. 정식 웹/API HTTPS 연결 시 리버스 프록시, SameSite/Secure 쿠키 정책과 CORS, 다중 Pod 세션 공유 설계가 필요합니다.
 - **영상 재생 API의 인증 차단만으로 MP4 직접 URL이 보호되지는 않습니다.** 로컬 MP4는 공개 개발 파일이고, 운영 콘텐츠 접근 제어는 별도 구현해야 합니다.
 - DB의 `02_test_data.sql` 가상 회원 암호는 로그인할 수 없습니다. 실제 가입 API로 생성한 회원만 BCrypt 로그인이 가능합니다.
