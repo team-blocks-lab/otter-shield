@@ -10,6 +10,7 @@
 - 로그인 회원의 재생 정보 API `GET /api/videos/{videoId}/playback`: PUBLIC 영상만 재생 URL과 한·영 VTT 자막 주소 반환.
 - MySQL `ott` 데이터베이스의 `member`, `video`, `subtitle` 사용. OTT 인증은 Store·사내 게시판과 별도.
 - **M5 로컬 통합 검증 완료**: 회원가입→DB 저장, 로그인·새로고침 세션 유지·로그아웃, 비로그인 재생 401, PUBLIC 영상 재생·영/한 자막·썸네일 표시, PRIVATE 상세/재생 404. [검증 증거 및 범위](docs/evidence/README.md) 참조.
+- **배포 자동화 결정**: M3 API와 M5 정적 웹 배포에 **Jenkins 사용 예정**. Jenkinsfile·Job·이미지 빌드/배포 작업은 미구축·미검증이며 기존 GitHub Actions/Argo CD 계획과 구분합니다.
 - **아직 미구현/미검증**: FastAPI·STT·LLM 실제 자막 생성, AWS 웹 정식 배포, M3 Linux/Kubernetes 서버 배포, 운영 미디어 접근 제어 및 다중 Pod 세션 공유. 로컬 API 성공과 인프라 배포 완료를 혼동하지 않습니다.
 
 ## 코드와 담당
@@ -35,9 +36,9 @@
 ## M3 한국망 서버 배포 전 체크
 
 1. M3 DB에 `ott` 테이블·접근 권한 구성. [스키마](sql/01_schema.sql) → [선택 테스트 데이터](sql/02_test_data.sql) → [조회 검증](sql/03_verify.sql). 테스트 회원의 `!TEST_ONLY_NO_LOGIN` 값은 실제 로그인 가능한 BCrypt 비밀번호가 아닙니다.
-2. Spring Boot 컨테이너 이미지와 Dockerfile·K8s Deployment/Service·환경변수 Secret 설정 준비 및 검증. **현재 이 폴더에는 인계용 실행 소스가 있지만 배포용 Dockerfile/K8s 매니페스트는 아직 등록되지 않았습니다.**
+2. **Jenkins**에서 Git 소스 체크아웃 → Gradle 테스트/bootJar → Docker 이미지 빌드/레지스트리 Push → M3 Kubernetes 배포·롤아웃 확인을 수행하도록 파이프라인을 준비합니다. Spring Boot 컨테이너 이미지와 Dockerfile·K8s Deployment/Service·환경변수 Secret 설정도 준비·검증해야 합니다. **현재 이 폴더에는 인계용 실행 소스가 있지만 배포용 Dockerfile/K8s 매니페스트는 아직 등록되지 않았습니다.**
 3. `SERVER_PORT`, `APP_MEDIA_BASE_URL`, MySQL 접속 정보, DNS/방화벽/HTTPS 경로 확정. 개발 기본 8081과 컨테이너 서비스 포트(설계상 8080 가능)를 구분.
-4. 웹은 **M5가 S3/CloudFront에 정적 배포**, API는 **M3가 한국 Kubernetes에 배포**. 정적 웹을 무조건 Kubernetes에 올리는 구조가 아닙니다.
+4. 웹은 **M5가 Jenkins를 사용하여 S3/CloudFront에 정적 배포**, API는 **M3가 Jenkins를 사용하여 한국 Kubernetes에 배포**하도록 계획합니다. 두 파이프라인은 별개이며 아직 실제 실행 검증 전입니다. 정적 웹을 무조건 Kubernetes에 올리는 구조가 아닙니다.
 5. 운영 웹에서 `/api`를 HTTPS API로 전달할 프록시/CloudFront 동작 설정과 세션 쿠키·CORS 정책 검증. 개발 Vite 프록시는 운영 배포에 포함되지 않습니다.
 6. 다중 Pod 운영 시 세션 공유/고정 세션 등 별도 설계 필요. 현재 로컬 세션 검증만으로 다중 Pod HA를 주장하지 않습니다.
 7. MP4 URL은 현재 로컬 데모처럼 공개 파일일 수 있습니다. **API의 401/404와 실제 미디어 파일 보호는 별개**입니다. 운영에서 필요하면 CloudFront 서명 URL/쿠키 및 S3 접근 제어 등을 추가 설계합니다.
