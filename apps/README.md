@@ -19,7 +19,7 @@
 1. 저장소 첫 화면의 Code → Download ZIP으로 전체 파일을 내려받습니다.
 2. 압축 해제 후 `otter-shield-main/apps` 폴더에서 배포할 서비스 폴더를 선택합니다.
 3. 그 서비스의 README에서 필요한 구성 요소와 실행 방법을 확인합니다.
-4. 현재는 안내 문서만 있으며, 실행 코드는 아직 등록되지 않았습니다. 빈 폴더를 실행 가능한 앱으로 판단하지 않습니다.
+4. M1 사내 게시판과 M3 OTT의 실행 코드는 등록됐습니다. 서비스별 구현·배포 검증 상태는 해당 README에서 확인합니다. M3 재생/자막 변경은 현재 `feat/m3-ott` 브랜치에 있으며 main 반영은 별도 확인해야 합니다.
 
 OTT의 `frontend/`, `backend/`, `ai-service/`는 `apps/m3-ott/` 아래에서 확인합니다.
 
@@ -27,7 +27,7 @@ OTT의 `frontend/`, `backend/`, `ai-service/`는 `apps/m3-ott/` 아래에서 확
 
 서비스별 README에 실제 버전, 실행·빌드 명령, 환경변수 이름, DB 준비, 검증된 커밋·이미지 버전을 기록합니다. 비밀값은 등록하지 않습니다.
 
-M3·M5는 GitHub Actions + Argo CD 배포 계획을 사용합니다. CI 경로 조건·빌드 위치와 Argo CD 대상 앱을 서비스별로 분리하여, Store 변경이 한국 OTT 배포를 잘못 실행하지 않도록 설정·시험합니다. S3 정적 React 배포는 Kubernetes 배포와 구분합니다. M1·M2 게시판의 배포 방식은 앱 실행 환경을 확인한 뒤 정합니다.
+**팀 최신 결정: M3 OTT 배포 자동화는 Jenkins 기준으로 진행합니다.** M3 Spring Boot 컨테이너 빌드·Kubernetes 배포와 M5 React S3/CloudFront 정적 배포는 별도 Jenkins 파이프라인으로 구분합니다. 이 문서는 도구 선정 사항을 반영한 것이며 Jenkins 구축·실행 성공을 의미하지 않습니다. M5 Store 등 다른 서비스의 Jenkins 전환 범위는 추가 합의가 필요합니다. 빌드 경로와 대상 배포 환경을 분리해 Store 변경이 한국 OTT에 잘못 배포되지 않도록 검증합니다. S3 정적 React 배포는 Kubernetes 배포와 구분합니다. M1·M2 게시판의 배포 방식은 앱 실행 환경을 확인한 뒤 정합니다.
 
 ## 인계 기준
 
