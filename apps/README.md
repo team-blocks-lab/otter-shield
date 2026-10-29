@@ -32,15 +32,29 @@
 
 ## OTT 메인
 
-React·Spring Boot·MySQL 로컬 연동 검증 · 2026-10-29
+<!-- 메인 화면: 영상 콘텐츠가 추가된 뒤 실제 서비스 화면 캡처 삽입 -->
 
-- 회원가입·로그인·세션 유지 및 로그아웃
-- 공개 영상 목록·상세 조회, 로그인 회원 영상 재생
-- 샘플 영상 한국어·영어 VTT 자막 선택, 썸네일 표시
-- 비로그인 재생 401 · 비공개 영상 조회·재생 404 검증
-- **AI 자막 생성 및 M3 Jenkins 배포는 진행 전** · OTT 미디어 S3/CloudFront CDN은 M5 담당
+- 회원가입·로그인 및 세션 유지·로그아웃
+- 공개 영상 목록·상세 정보 조회, 썸네일 표시
+- 로그인 회원의 샘플 영상 재생, 한국어·영어 VTT 자막 선택
+- 비로그인 재생 제한, 비공개 영상 조회·재생 차단
 
-[환경 설정](m3-ott/README.md) · [검증 캡처](m3-ott/docs/evidence/README.md) · [ERD](../design/erd/ott/README.md) · [클래스 다이어그램](../design/classdiagram/ott/README.md)
+### 검증 자료
+
+개발 PC 검증 · 2026-10-29
+
+| 확인 항목 | 캡처 |
+|---|---|
+| 회원가입 · 입력 검사 | [가입 201](m3-ott/docs/evidence/01-signup-201.png) · [중복 409](m3-ott/docs/evidence/02-signup-duplicate-409.png) · [입력 오류 400](m3-ott/docs/evidence/03-signup-validation-400.png) |
+| 회원 정보 DB 저장 | [MySQL 저장 확인](m3-ott/docs/evidence/04-signup-db.png) |
+| 로그인 · 세션 유지 | [로그인 200](m3-ott/docs/evidence/05-login-200.png) · [세션 조회 200](m3-ott/docs/evidence/06-session-me-200.png) |
+| 로그인 오류 · 로그아웃 | [로그인 실패 401](m3-ott/docs/evidence/07-login-invalid-401.png) · [로그아웃 204](m3-ott/docs/evidence/08-logout-204.png) · [세션 해제 401](m3-ott/docs/evidence/09-session-after-logout-401.png) |
+| 영상 목록 · 상세 조회 | [목록 200](m3-ott/docs/evidence/10-video-list-empty-200.png) · [페이지 오류 400](m3-ott/docs/evidence/11-video-page-invalid-400.png) · [미존재 404](m3-ott/docs/evidence/12-video-not-found-404.png) |
+| 비공개 영상 접근 제한 | [상세 404](m3-ott/docs/evidence/13-private-detail-404.png) · [재생 404](m3-ott/docs/evidence/14-private-playback-404.png) |
+
+영상 재생·한영 자막은 로컬에서 확인했으며 화면 캡처는 추후 등록 예정. AI 자막 생성·Jenkins 배포·미디어 CDN 구축은 아직 검증 전.
+
+[환경 설정](m3-ott/README.md) · [전체 검증 캡처](m3-ott/docs/evidence/README.md) · [ERD](../design/erd/ott/README.md) · [클래스 다이어그램](../design/classdiagram/ott/README.md)
 
 ## Store
 
