@@ -1,3 +1,5 @@
+Jenkins GitHub Webhook 자동 배포 검증 - 2026-11-02
+
 # OTTer Shield
 
 OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 서비스 동작을 비교하는 5인 팀 프로젝트.
