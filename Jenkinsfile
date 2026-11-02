@@ -128,6 +128,7 @@ pipeline {
             }
         }
         
+      
         stage('6. React Deploy to Nginx') {
             steps {
                 sshagent(credentials: ['web-deploy-ssh']) {
@@ -136,35 +137,23 @@ pipeline {
         
                         FILE="otter-react-${SHORT_SHA}.tar.gz"
                         WEB="webdeploy@192.168.110.10"
+                        RELEASE="/var/www/otter-ui/releases/${SHORT_SHA}"
         
                         scp -o StrictHostKeyChecking=yes \
                           "$FILE" "$WEB:/home/webdeploy/$FILE"
         
                         ssh -o StrictHostKeyChecking=yes "$WEB" \
-                          "bash -s -- '$SHORT_SHA'" <<'REMOTE'
-        set -euo pipefail
-        
-        REV="$1"
-        BASE="/var/www/otter-ui"
-        RELEASE="$BASE/releases/$REV"
-        
-        mkdir -p "$RELEASE"
-        
-        tar -xzf "/home/webdeploy/otter-react-$REV.tar.gz" \
-          -C "$RELEASE"
-        
-        test -s "$RELEASE/index.html"
-        
-        ln -sfn "$RELEASE" "$BASE/.next-$REV"
-        
-        mv -Tf "$BASE/.next-$REV" "$BASE/current"
-        
-        rm -f "/home/webdeploy/otter-react-$REV.tar.gz"
-        REMOTE
+                          "mkdir -p '$RELEASE' &&
+                           tar -xzf '/home/webdeploy/$FILE' -C '$RELEASE' &&
+                           test -s '$RELEASE/index.html' &&
+                           ln -sfn '$RELEASE' '/var/www/otter-ui/.next-${SHORT_SHA}' &&
+                           mv -Tf '/var/www/otter-ui/.next-${SHORT_SHA}' '/var/www/otter-ui/current' &&
+                           rm -f '/home/webdeploy/$FILE'"
                     '''
                 }
             }
         }
+
 
 
     }
