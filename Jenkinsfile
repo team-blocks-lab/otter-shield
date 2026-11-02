@@ -104,6 +104,69 @@ pipeline {
                 }
             }
         }
+                    
+        stage('5. React Build') {
+            steps {
+                sh '''
+                    set -eu
+        
+                    podman run --rm \
+                      --userns=keep-id \
+                      -v "$PWD/apps/m3-ott/frontend:/app:Z" \
+                      -w /app \
+                      -e VITE_USE_MOCK=false \
+                      -e VITE_LOCAL_DEMO_PLAYBACK=false \
+                      -e VITE_API_BASE_URL= \
+                      docker.io/library/node:22 \
+                      sh -c 'npm ci && npm run build'
+        
+                    test -f apps/m3-ott/frontend/dist/index.html
+        
+                    tar -czf "otter-react-${SHORT_SHA}.tar.gz" \
+                      -C apps/m3-ott/frontend/dist .
+                '''
+            }
+        }
+        
+        stage('6. React Deploy to Nginx') {
+            steps {
+                sshagent(credentials: ['web-deploy-ssh']) {
+                    sh '''
+                        set -eu
+        
+                        FILE="otter-react-${SHORT_SHA}.tar.gz"
+                        WEB="webdeploy@192.168.110.10"
+        
+                        scp -o StrictHostKeyChecking=yes \
+                          "$FILE" "$WEB:/home/webdeploy/$FILE"
+        
+                        ssh -o StrictHostKeyChecking=yes "$WEB" \
+                          "bash -s -- '$SHORT_SHA'" <<'REMOTE'
+        set -euo pipefail
+        
+        REV="$1"
+        BASE="/var/www/otter-ui"
+        RELEASE="$BASE/releases/$REV"
+        
+        mkdir -p "$RELEASE"
+        
+        tar -xzf "/home/webdeploy/otter-react-$REV.tar.gz" \
+          -C "$RELEASE"
+        
+        test -s "$RELEASE/index.html"
+        
+        ln -sfn "$RELEASE" "$BASE/.next-$REV"
+        
+        mv -Tf "$BASE/.next-$REV" "$BASE/current"
+        
+        rm -f "/home/webdeploy/otter-react-$REV.tar.gz"
+        REMOTE
+                    '''
+                }
+            }
+        }
+
+
     }
 
     post {
