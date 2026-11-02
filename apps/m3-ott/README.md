@@ -3,6 +3,15 @@
 개발: M5 유은혜 · 웹·API·DB 배포: M3 홍은서 · 영상 S3/CloudFront CDN: M5  
 상태: **로컬 통합 검증 완료** · M3 Jenkins/Kubernetes 배포 및 AI 자막 생성 미완료
 
+## 개발·검증 범위
+
+- React·Spring Boot 기반 OTT 웹·API 개발
+- 회원가입·세션 인증, 공개 영상 조회·재생 권한 검사
+- 샘플 영상 재생·한영 VTT 자막 확인
+- AI 자막 생성·Jenkins/Kubernetes 배포 연동 계획
+
+[API 검증 캡처](docs/evidence/README.md) · [AI 자막 개발 범위](ai-service/README.md)
+
 ## 버전
 
 | 구성 | 버전·준비 항목 |
