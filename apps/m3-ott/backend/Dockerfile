@@ -1,4 +1,5 @@
-FROM eclipse-temurin:21-jdk AS builder
+
+FROM docker.io/library/eclipse-temurin:21-jdk AS builder
 
 WORKDIR /build
 
@@ -9,7 +10,7 @@ COPY src/ ./src/
 RUN chmod +x ./gradlew \
     && ./gradlew --no-daemon bootJar -x test
 
-FROM eclipse-temurin:21-jre
+FROM docker.io/library/eclipse-temurin:21-jre
 
 WORKDIR /app
 
