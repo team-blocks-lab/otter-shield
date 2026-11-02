@@ -3,6 +3,13 @@
 개발·배포: M5 유은혜 · 캐나다 AWS  
 현재 실행 코드·SQL 등록 전. 아래 버전은 개발 기준.
 
+## 설계·개발 범위
+
+- Store 회원가입·로그인, 상품·장바구니·모의 주문 웹·API 설계
+- React·Spring Boot 컨테이너 및 캐나다 AWS EKS 배포 계획
+- 공개 ALB·HTTPS, 비공개 RDS 접근 경로 설계
+- GitHub Actions·Argo CD 배포 연동 및 DB 백업·복원 계획
+
 ## 버전
 
 | 구성 | 적용 기준 |
