@@ -117,6 +117,7 @@ pipeline {
                       -e VITE_USE_MOCK=false \
                       -e VITE_LOCAL_DEMO_PLAYBACK=false \
                       -e VITE_API_BASE_URL= \
+                      -e VITE_MEDIA_BASE_URL=https://dcx0apovwtx2p.cloudfront.net \
                       docker.io/library/node:22 \
                       sh -c 'npm ci && npm run build'
         
