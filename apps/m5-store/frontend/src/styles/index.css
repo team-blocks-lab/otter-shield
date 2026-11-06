@@ -1,0 +1,7 @@
+/* Hallmark · shape: Product Shelf · genre: editorial · theme: custom · job: buy · idea: "A small official-goods shop where the product photo is the first thing seen." · vibe: "ivory shelf, charcoal type, one coral"
+ * paper: oklch(97.5% 0.012 85) · accent: oklch(70% 0.185 32) · display: Pretendard (system Korean stack) · body: Pretendard (system Korean stack) · hero: asymmetric, short Korean line on columns 1 to 5, product photos offset on 6 to 12, goods list starts above the fold · nav: wordmark left, two links, cart and login right on navy · footer: single slim line · imagery: the product photographs from the API, local SVG stand-in · signature: the offset pair of product photos beside one short line
+ * axes: ivory/sans/coral · posture: split-asymmetric · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 · weakest: V, no real photographs ship in the zip so the hero shows the API image or the local SVG stand-in; wired the hero to the first two goods so real photos appear as soon as the backend serves them */
+@import url("./tokens.css");
+@import url("./base.css");
+@import url("./app.css");
