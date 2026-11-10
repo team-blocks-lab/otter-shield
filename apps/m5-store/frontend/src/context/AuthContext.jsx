@@ -26,7 +26,7 @@ export function AuthProvider({ children }) {
     setUser({ loginId })
   }, [])
 
-  const signup = useCallback((loginId, password) => api.signup({ loginId, password }), [])
+  const signup = useCallback(({ name, loginId, password }) => api.signup({ name, loginId, password }), [])
 
   const logout = useCallback(async () => {
     try {
@@ -44,3 +44,4 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext)
 }
+

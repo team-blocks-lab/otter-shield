@@ -25,9 +25,19 @@ def main() -> None:
     if not bucket or not prefix:
         raise SystemExit("OTT_MEDIA_BUCKET과 OTT_SUBTITLE_PREFIX를 설정해 주세요.")
 
-    video_name = PurePosixPath(args.video_key)
-    if video_name.suffix.lower() != ".mp4":
-        raise SystemExit("MP4 영상의 S3 경로를 입력해 주세요.")
+    video_prefix = os.getenv("OTT_VIDEO_PREFIX", "test/videos").strip().strip("/")
+    prefix_parts = video_prefix.split("/")
+    key_parts = args.video_key.split("/")
+    if (
+        key_parts[:len(prefix_parts)] != prefix_parts
+        or len(key_parts) <= len(prefix_parts)
+        or any(part in ("", ".", "..") for part in key_parts)
+        or not args.video_key.endswith(".mp4")
+    ):
+        raise SystemExit(f"{video_prefix}/ 아래의 .mp4 경로를 입력해 주세요.")
+
+    # 원본 폴더 구조를 유지해 같은 파일명의 자막 경로 충돌 방지
+    relative_video = PurePosixPath(*key_parts[len(prefix_parts):])
 
     s3 = boto3.client("s3")
     source = s3.head_object(Bucket=bucket, Key=args.video_key)
@@ -54,7 +64,10 @@ def main() -> None:
 
     for language in ("en", "ko"):
         local_file = work_dir / "audio" / f"{language}.vtt"
-        object_key = f"{prefix}/{video_name.stem}.{language}.vtt"
+        if not any(" --> " in line for line in local_file.read_text(encoding="utf-8").splitlines()):
+            print(f"업로드 생략 [{language}]: 생성된 자막 없음")
+            continue
+        object_key = f"{prefix}/{relative_video.with_suffix(f'.{language}.vtt')}"
 
         if args.upload:
             s3.upload_file(

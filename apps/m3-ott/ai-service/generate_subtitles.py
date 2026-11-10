@@ -31,14 +31,8 @@ def main(folder):
     load_dotenv(Path(__file__).resolve().with_name(".env"))
     api_key = os.getenv("GEMINI_API_KEY", "").strip()
 
-    if not api_key:
-        raise SystemExit("ai-service/.env에 GEMINI_API_KEY를 설정해 주세요.")
-
-    client = genai.Client(
-        api_key=api_key,
-        http_options=types.HttpOptions(timeout=90_000),
-    )
-    model = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
+    client = None
+    model = os.getenv("GEMINI_MODEL", "gemini-3.1-flash-lite")
     tracks = {"en": ["WEBVTT\n"], "ko": ["WEBVTT\n"]}
 
     with (folder / "segments.csv").open(encoding="utf-8", newline="") as manifest:
@@ -56,6 +50,14 @@ def main(folder):
                 cues = json.loads(cache_file.read_text(encoding="utf-8"))
                 print(f"저장 결과 사용: {audio.name}", flush=True)
             else:
+                if client is None:
+                    if not api_key:
+                        raise SystemExit("ai-service/.env에 GEMINI_API_KEY를 설정해 주세요.")
+                    client = genai.Client(
+                        api_key=api_key,
+                        http_options=types.HttpOptions(timeout=90_000),
+                    )
+
                 print(f"Gemini 요청 중: {audio.name}", flush=True)
                 request_config = types.GenerateContentConfig(
                     response_mime_type="application/json",
@@ -137,7 +139,9 @@ def main(folder):
 
     for lang, blocks in tracks.items():
         output = folder / f"{lang}.vtt"
-        output.write_text("\n".join(blocks), encoding="utf-8")
+        temp_file = output.with_suffix(".tmp")
+        temp_file.write_text("\n".join(blocks), encoding="utf-8")
+        temp_file.replace(output)
         print(f"저장: {output} ({len(blocks) - 1}개 자막)")
 
 
