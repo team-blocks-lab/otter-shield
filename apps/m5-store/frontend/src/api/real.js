@@ -1,18 +1,16 @@
 import { request, loadCsrf, clearCsrf } from './http'
 
-// 명세로 확인된 엔드포인트: GET /api/auth/csrf, GET /api/goods, GET /api/cart,
-// POST /api/cart/items(응답만), POST /api/orders, GET /api/orders, GET /api/orders/{id}
-// 아래에서 "확인 필요"로 표시한 항목은 명세가 없어 가정한 값입니다. README 참고.
+// Store 백엔드 API 경로
 const PATHS = {
   goods: '/api/goods',
   cart: '/api/cart',
-  cartItems: '/api/cart/items', // 요청 본문 {goodsId, quantity}는 확인 필요
-  cartItem: (id) => `/api/cart/items/${id}`, // 수량 변경·삭제 URL 확인 필요
+  cartItems: '/api/cart/items',
+  cartItem: (id) => `/api/cart/items/${id}`,
   orders: '/api/orders',
   order: (id) => `/api/orders/${id}`,
-  login: '/api/auth/login', // 확인 필요
-  logout: '/api/auth/logout', // 확인 필요
-  signup: '/api/auth/signup', // 확인 필요
+  login: '/api/auth/login',
+  logout: '/api/auth/logout',
+  signup: '/api/auth/signup',
 }
 
 export const realApi = {
@@ -20,7 +18,6 @@ export const realApi = {
     const first = await request('GET', PATHS.goods)
     let goods = first?.goods ?? []
     const totalPages = first?.totalPages ?? 1
-    // 다음 페이지 파라미터(?page=)는 확인 필요
     for (let page = 1; page < totalPages; page += 1) {
       const next = await request('GET', `${PATHS.goods}?page=${page}`)
       goods = goods.concat(next?.goods ?? [])
@@ -38,14 +35,14 @@ export const realApi = {
     return request('POST', PATHS.cartItems, { goodsId, quantity })
   },
   async updateCartItem(cartItemId, quantity) {
-    return request('PATCH', PATHS.cartItem(cartItemId), { quantity })
+    return request('PUT', PATHS.cartItem(cartItemId), { quantity })
   },
   async removeCartItem(cartItemId) {
     return request('DELETE', PATHS.cartItem(cartItemId))
   },
 
-  async signup({ loginId, password }) {
-    return request('POST', PATHS.signup, { loginId, password })
+  async signup({ name, loginId, password }) {
+    return request('POST', PATHS.signup, { name, loginId, password })
   },
   async login({ loginId, password }) {
     const body = await request('POST', PATHS.login, { loginId, password })
@@ -85,3 +82,4 @@ export const realApi = {
     return request('GET', PATHS.order(orderId))
   },
 }
+

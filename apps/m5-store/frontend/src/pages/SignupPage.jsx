@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 export default function SignupPage() {
   const { signup } = useAuth()
   const navigate = useNavigate()
+  const [name, setName] = useState('')
   const [loginId, setLoginId] = useState('')
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -16,14 +17,16 @@ export default function SignupPage() {
   async function handleSubmit(event) {
     event.preventDefault()
     if (busy.current) return
-    if (!loginId.trim() || !password) return setError('아이디와 비밀번호를 입력해 주세요.')
+    setFieldErrors({})
+    if (!name.trim() || !loginId.trim() || !password) {
+      return setError('이름, 아이디, 비밀번호를 입력해 주세요.')
+    }
     if (password !== confirm) return setError('비밀번호 확인이 일치하지 않습니다.')
     busy.current = true
     setPending(true)
     setError('')
-    setFieldErrors({})
     try {
-      await signup(loginId.trim(), password)
+      await signup({ name: name.trim(), loginId: loginId.trim(), password })
       navigate('/login', { replace: true, state: { registered: true } })
     } catch (e) {
       setError(e.message)
@@ -39,6 +42,11 @@ export default function SignupPage() {
       <h1 className="page-title">회원가입</h1>
       <p className="muted">OTTer Store 전용 계정입니다. OTT 서비스 계정과 연동되지 않습니다.</p>
       <form className="form" onSubmit={handleSubmit} noValidate>
+        <label className="field">
+          <span>이름</span>
+          <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" maxLength={50} required />
+          <small className="field-error">{fieldErrors.name}</small>
+        </label>
         <label className="field">
           <span>아이디</span>
           <input value={loginId} onChange={(e) => setLoginId(e.target.value)} autoComplete="username" required />
@@ -67,3 +75,4 @@ export default function SignupPage() {
     </div>
   )
 }
+
