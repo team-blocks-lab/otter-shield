@@ -1,5 +1,6 @@
 import argparse
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -53,7 +54,7 @@ def main() -> None:
 
     try:
         if args.resume:
-            if not source_file.is_file() or not has_outputs(audio_dir, "segments.csv"):
+            if not source_file.is_file() or not (audio_dir / "segments.csv").is_file():
                 raise SystemExit(
                     "오디오 분할 완료 기록이 없습니다. 새 작업 폴더에서 시작해 주세요."
                 )
@@ -71,13 +72,18 @@ def main() -> None:
                 )
 
             work_dir.mkdir(parents=True)
-            run_step("split_audio.py", video, audio_dir)
+            try:
+                run_step("split_audio.py", video, audio_dir)
 
-            # 오디오 분할이 성공한 뒤에만 재실행용 기록 저장
-            source_file.write_text(
-                json.dumps(video_info(video), ensure_ascii=False, indent=2),
-                encoding="utf-8",
-            )
+                # 오디오 분할 완료 후 재실행 기록 저장
+                source_file.write_text(
+                    json.dumps(video_info(video), ensure_ascii=False, indent=2),
+                    encoding="utf-8",
+                )
+            except (subprocess.CalledProcessError, OSError, KeyboardInterrupt):
+                # 이번 실행에서 만든 미완료 작업 폴더만 정리
+                shutil.rmtree(work_dir)
+                raise
 
         if args.split_only:
             print(f"\n오디오 분할 완료: {audio_dir}")
@@ -103,7 +109,7 @@ def main() -> None:
     except subprocess.CalledProcessError as error:
         script_name = Path(error.cmd[1]).name
         if script_name == "split_audio.py":
-            raise SystemExit(f"{script_name} 실패. 오류를 확인한 뒤 새 작업 폴더에서 시작해 주세요.")
+            raise SystemExit(f"{script_name} 실패. 오류를 확인한 뒤 같은 명령을 다시 실행해 주세요.")
         raise SystemExit(f"{script_name} 실패. 오류를 확인한 뒤 같은 경로에 --resume을 붙여 재실행해 주세요.")
 
     print(f"\n처리 완료: {audio_dir}")
