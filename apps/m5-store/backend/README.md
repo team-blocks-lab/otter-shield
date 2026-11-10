@@ -1,10 +1,11 @@
 # Store | Backend
 
-| 항목 | 내용 |
-|---|---|
-| 상태 | 실행 코드 등록 전 |
-| 기술 | Java 21 · Spring Boot 4.1.1 · JPA 기준 |
-| 배포 | 캐나다 EKS |
-| 연결 | 비공개 RDS for MySQL · Store 자체 회원 DB |
+Java 21 · Spring Boot 4.1.2 · Spring Data JPA. DB에 스키마를 적용하고 환경변수를 주입한 뒤 실행한다.
 
-[앱 환경 설정](../README.md) · [앱 소개·UI](../../README.md)
+```bash
+./gradlew bootRun
+```
+
+Windows CMD에서는 `gradlew.bat bootRun`을 실행한다. 컨테이너 기본 포트는 8082이며 상태 확인 경로는 `/actuator/health`다.
+
+[DB·환경변수·배포 설정](../README.md) · [앱 소개](../../README.md)
