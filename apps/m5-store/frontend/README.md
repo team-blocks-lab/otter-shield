@@ -1,10 +1,12 @@
 # Store | Frontend
 
-| 항목 | 내용 |
-|---|---|
-| 상태 | 실행 코드 등록 전 |
-| 기술 | React 19.3.0 기준 |
-| 배포 | 캐나다 EKS |
-| 연결 | Store 자체 API |
+React 18.3.1과 Vite를 사용한다. 개발 서버는 `/api`를 로컬 Spring Boot의 8082 포트로 전달한다.
 
-[앱 환경 설정](../README.md) · [앱 소개·UI](../../README.md)
+```bash
+npm ci
+npm run dev
+```
+
+배포용 Dockerfile은 React를 빌드하고 Nginx 8080 포트에서 제공한다. 배포 환경의 `/api` 경로는 ALB에서 백엔드로 전달한다.
+
+[앱 환경 설정](../README.md) · [앱 소개](../../README.md)
