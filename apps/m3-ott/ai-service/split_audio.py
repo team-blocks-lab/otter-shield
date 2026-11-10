@@ -6,6 +6,20 @@ from pathlib import Path
 def split_audio(video_path: Path, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=False)
 
+    # 오디오 트랙이 없는 영상은 빈 구간 목록으로 처리
+    audio_stream = subprocess.check_output(
+        [
+            "ffprobe", "-v", "error", "-select_streams", "a:0",
+            "-show_entries", "stream=index", "-of", "csv=p=0",
+            str(video_path),
+        ],
+        text=True,
+    ).strip()
+    if not audio_stream:
+        (output_dir / "segments.csv").touch()
+        print("오디오 트랙 없음", flush=True)
+        return
+
     subprocess.run(
         [
             "ffmpeg", "-hide_banner", "-loglevel", "error",
