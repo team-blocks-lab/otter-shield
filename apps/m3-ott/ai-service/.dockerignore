@@ -1,0 +1,8 @@
+.env
+.env.*
+.venv/
+video-work/
+__pycache__/
+*.pyc
+.git/
+
