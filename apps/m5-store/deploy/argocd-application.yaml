@@ -13,7 +13,7 @@ spec:
     server: https://kubernetes.default.svc
     namespace: m5-store
   syncPolicy:
-  automated:
-    enabled: true
-    prune: false
-    selfHeal: false
+    automated:
+      enabled: true
+      prune: false
+      selfHeal: false
