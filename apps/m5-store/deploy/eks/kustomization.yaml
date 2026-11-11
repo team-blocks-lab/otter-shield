@@ -4,6 +4,6 @@ resources:
   - store.yaml
 images:
   - name: 251929332195.dkr.ecr.ca-central-1.amazonaws.com/otter-store-web
-    newTag: "a0b494a0db14033493a7239ad767d84bc29f2bf9-42947190965-1"
+    newTag: "94f51284781ff70d0bb8b039eb63848faac11238-42952968911-1"
   - name: 251929332195.dkr.ecr.ca-central-1.amazonaws.com/otter-store-api
-    newTag: "a0b494a0db14033493a7239ad767d84bc29f2bf9-42947190965-1"
+    newTag: "94f51284781ff70d0bb8b039eb63848faac11238-42952968911-1"
