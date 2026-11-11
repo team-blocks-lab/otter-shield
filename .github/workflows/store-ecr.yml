@@ -2,6 +2,15 @@ name: Store 이미지 빌드 및 ECR 업로드
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/m5-store/frontend/**'
+      - 'apps/m5-store/backend/**'
+
+concurrency:
+  group: store-ecr-${{ github.ref }}
+  cancel-in-progress: false
 
 permissions: {}
 
@@ -14,6 +23,10 @@ jobs:
     permissions:
       contents: read
       id-token: write
+
+    outputs:
+      registry: ${{ steps.ecr.outputs.registry }}
+      tag: ${{ steps.ecr.outputs.tag }}
 
     env:
       AWS_REGION: ca-central-1
@@ -36,8 +49,10 @@ jobs:
           docker build --platform linux/amd64 -t otter-store-web:ci apps/m5-store/frontend
 
       - name: ECR 이미지 업로드
+        id: ecr
         shell: bash
         run: |
+          set -euo pipefail
           account_id="$(aws sts get-caller-identity --query Account --output text)"
           registry="$account_id.dkr.ecr.$AWS_REGION.amazonaws.com"
           tag="$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
@@ -51,3 +66,53 @@ jobs:
             docker push "$uri"
             printf -- '- `%s`\n' "$uri" >> "$GITHUB_STEP_SUMMARY"
           done
+          printf 'registry=%s\ntag=%s\n' "$registry" "$tag" >> "$GITHUB_OUTPUT"
+
+  update-deployment:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+
+    steps:
+      - name: 저장소 체크아웃
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Git에 배포 이미지 버전 기록
+        shell: bash
+        env:
+          REGISTRY: ${{ needs.publish.outputs.registry }}
+          IMAGE_TAG: ${{ needs.publish.outputs.tag }}
+        run: |
+          set -euo pipefail
+          git fetch origin main
+          if ! git diff --quiet "$GITHUB_SHA" FETCH_HEAD -- \
+            apps/m5-store/frontend apps/m5-store/backend .github/workflows/store-ecr.yml; then
+            echo "빌드 이후 소스 변경: 배포 갱신 생략" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git switch --detach FETCH_HEAD
+
+          manifest=apps/m5-store/deploy/eks/kustomization.yaml
+          test -f "$manifest"
+          cat > "$manifest" <<EOF
+          apiVersion: kustomize.config.k8s.io/v1beta1
+          kind: Kustomization
+          resources:
+            - store.yaml
+          images:
+            - name: $REGISTRY/otter-store-web
+              newTag: "$IMAGE_TAG"
+            - name: $REGISTRY/otter-store-api
+              newTag: "$IMAGE_TAG"
+          EOF
+
+          git add -- "$manifest"
+          if git diff --cached --quiet; then exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(store): deploy image tag $IMAGE_TAG"
+          git push origin HEAD:main
