@@ -4,9 +4,11 @@
 
 Team Blocks · 킥오프 2026.10.16 · 최종 발표 2026.11.16
 
-[망별 설계](design/topology/README.md) · [서비스 시연·개발 증거](apps/README.md) · [팀원별 검증 기록](VERIFICATION.md)
+[팀원별 기여](#팀원별-기여) · [망별 설계](design/topology/README.md) · [서비스 시연·개발 증거](apps/README.md) · [보안 검증 기록](VERIFICATION.md)
 
 ![OTTer Shield 전체망 AS-IS 구성도](design/topology/M_%EC%A0%84%EC%B2%B4%EB%A7%9D_AS-IS.drawio.png)
+
+*AS-IS: 보안 개선 전 기준 설계.*
 
 ## 팀원별 기여
 
