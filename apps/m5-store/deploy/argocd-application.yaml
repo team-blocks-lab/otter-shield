@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: m5-store
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/team-blocks-lab/otter-shield.git
+    targetRevision: main
+    path: apps/m5-store/deploy/eks
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: m5-store
