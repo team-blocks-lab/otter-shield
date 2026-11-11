@@ -131,7 +131,7 @@ public class AiIngestController {
         authenticate(token);
 
         checkKey(input.videoKey(), "test/videos");
-        checkKey(input.thumbnailKey(), "thumbnails");
+        checkKey(input.thumbnailKey(), "test/thumbnails");
         checkFingerprint(input.fingerprint());
 
         if (input.title() == null
@@ -173,7 +173,7 @@ public class AiIngestController {
 
             checkKey(
                     subtitle.subtitleKey(),
-                    "subtitles"
+                    "test/subtitles"
             );
         }
 
