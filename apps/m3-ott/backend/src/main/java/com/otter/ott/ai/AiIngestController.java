@@ -100,7 +100,7 @@ public class AiIngestController {
             @RequestParam String fingerprint
     ) {
         authenticate(token);
-        checkKey(videoKey, "videos");
+        checkKey(videoKey, "test/videos");
         checkFingerprint(fingerprint);
 
         List<String> rows = jdbc.query(
@@ -130,7 +130,7 @@ public class AiIngestController {
     ) {
         authenticate(token);
 
-        checkKey(input.videoKey(), "videos");
+        checkKey(input.videoKey(), "test/videos");
         checkKey(input.thumbnailKey(), "thumbnails");
         checkFingerprint(input.fingerprint());
 
