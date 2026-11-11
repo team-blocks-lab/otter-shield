@@ -1,12 +1,12 @@
-Jenkins GitHub Webhook 자동 배포 검증 - 2026-11-02
-
 # OTTer Shield
 
 OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 서비스 동작을 비교하는 5인 팀 프로젝트.
 
 - **팀:** Team Blocks
 - **기간:** 2026.10.19–11.16 · 킥오프 10.16 · 최종 발표 11.16
-- **진행 단계:** AS-IS 기본망 구축 및 망 간 연결 점검
+- **확인된 결과:** Store 공개 HTTPS 배포·모의 주문·자동 배포, OTT 한·영 자막 재생, 사내 게시판 개발 PC API 검증
+
+[앱 개발·시연·검증](apps/README.md) · [공개 Store](https://otterflow2026.store/) · [전체망 구성](design/topology/README.md) · [팀 작업 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2)
 
 가상 OTT 고객사 **OTTer**를 대상으로, 보안 컨설팅사 **NetBlocks**의 역할을 맡아 진행합니다. 본사·지사 업무망, OTT 서비스망, 백업 환경을 나누어 구축하고 각 구역의 취약점을 확인합니다. 개선 후에는 같은 공격을 다시 시도하고, 정상 서비스도 계속 이용할 수 있는지 확인합니다.
 
@@ -38,22 +38,22 @@ OTT 서비스 환경을 구축하고, 공격 재현 전후의 보안 설정과 �
 | M4 | 백업 파일 접근 권한 개선 및 DB 복원 |
 | M5 | VPN을 통한 한국 시험용 DB 직접 접근 제한, 웹 업무 접속 확인 |
 
-현재는 AS-IS 구축 단계이며, 위 항목은 이후 검증 계획입니다. 구축 결과와 남은 작업은 [WBS](WBS.md), [업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2), 각 담당 기술서에서 관리합니다.
+위 표는 구역별 검증 항목입니다. 실제 시험 결과와 진행 상태는 [WBS](WBS.md), [업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2), 각 담당 기술서에서 관리합니다.
 
-## 사용·도입 예정 기술
+## 사용·검토 기술
 
 | 영역 | 기술 |
 |---|---|
 | 네트워크·가상화 | GNS3, VMware/vSphere, Sophos UTM 9, VyOS |
 | 보안·컨테이너·클라우드 | Wazuh, Kubernetes, AWS |
 | 앱 개발 | React, Spring Boot, FastAPI |
-| 배포 자동화 | M3 OTT: Jenkins / M5 Store: GitHub Actions·Argo CD 연동 계획 |
+| 배포 자동화 | M3 OTT: Jenkins / M5 Store: GitHub Actions → ECR → Argo CD → EKS ([검증 기록](apps/README.md#otter-store)) |
 
 ## 프로젝트 자료
 
 | 자료 | 링크 |
 |---|---|
-| 일정·업무 | [WBS](WBS.md) · [최종 Excel](https://raw.githubusercontent.com/team-blocks-lab/otter-shield/main/plans/wbs/otter-shield-wbs-final.xlsx) · [업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2) |
+| 일정·업무 | [WBS](WBS.md) · [최종 Excel](plans/wbs/otter-shield-wbs-final.xlsx) · [업무 보드](https://github.com/orgs/team-blocks-lab/projects/4/views/2) |
 | 계획서 | [프로젝트 수행 계획서 v1.0](plans/project-plan-v1.0.pdf) |
 | 설계 | [Topology·ERD·클래스 다이어그램](design/README.md) |
 | 앱 | [사내 게시판](apps/m1-intranet/README.md) · [OTT·AI 자막](apps/m3-ott/README.md) · [캐나다 Store](apps/m5-store/README.md) |
