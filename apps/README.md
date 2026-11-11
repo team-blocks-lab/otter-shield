@@ -1,10 +1,24 @@
-# OTTer Shield | Applications
+# OTTer Shield | 애플리케이션 개발
 
-| 앱 | 용도 | 배포 |
+**유은혜 · M5 / PM** — 사내 게시판·OTT·굿즈 스토어 설계 및 개발, Store AWS 배포와 자동 배포 구성.
+
+| 앱 | 직접 구현한 범위 | 확인한 결과 |
 |---|---|---|
-| [사내 게시판](m1-intranet/README.md) | 직원 간 칭찬·점심 이야기 공유 | M1 한국 · M2 독일 |
-| [OTT 메인](m3-ott/README.md) | 영상 탐색·재생·한영 자막 | M3 한국 웹·API·DB · M5 영상 CDN |
-| [Store](m5-store/README.md) | 굿즈 조회·장바구니·모의 주문 | M5 캐나다 AWS |
+| [OTTer Store](m5-store/README.md) | 회원 세션, 굿즈 조회, 장바구니, 모의 주문, AWS 배포 | 공개 도메인에서 주문 완료, PR 머지 후 자동 배포 |
+| [OTTer Inside](m1-intranet/README.md) | 직원 로그인, 게시글 CRUD, 사진 첨부 | 개발 PC에서 API·화면 검증 |
+| [OTTer OTT](m3-ott/README.md) | 회원 세션, 영상 탐색·재생 권한, 한·영 자막 표시 | OTT 배포 화면에서 영상 재생과 두 자막 트랙 표시 확인 |
+
+## OTTer Store
+
+[공개 서비스](https://otterflow2026.store/) · [실행 및 배포 구성](m5-store/README.md)
+
+![OTTer Store 공개 상품 목록](docs/portfolio/store-home.jpg)
+
+- **구매 흐름:** 상품 선택 → [장바구니](docs/portfolio/store-cart.jpg) → [주문서](docs/portfolio/store-checkout.jpg) → [모의 주문 완료](docs/portfolio/store-complete.jpg). 실제 결제 없음.
+- **자동 배포:** PR 머지 → GitHub Actions 이미지 빌드 및 ECR 업로드 → Git 배포 태그 갱신 → Argo CD가 EKS에 반영. [Actions #5](https://github.com/team-blocks-lab/otter-shield/actions/runs/42952968911) · [실행 캡처](docs/portfolio/store-actions.jpg).
+- **배포 검증:** Actions 실행 #5의 커밋 `94f5128`과 EKS 웹 이미지 태그 일치, 롤아웃 성공, 공개 HTML에서 공유 미리보기 태그 확인.
+
+[ERD](../design/erd/store/README.md) · [클래스 다이어그램](../design/classdiagram/store/README.md)
 
 ## 사내 게시판 · OTTer Inside
 
@@ -30,14 +44,15 @@
 
 [환경 설정](m1-intranet/README.md) · [전체 검증 캡처](m1-intranet/docs/evidence/README.md) · [테스트 기록·인계 확인](m1-intranet/docs/TEST_REPORT.md)
 
-## OTT 메인
+## OTTer OTT
 
-<!-- 메인 화면: 영상 콘텐츠가 추가된 뒤 실제 서비스 화면 캡처 삽입 -->
+**M5 유은혜:** 웹·API 개발, 영상 CDN 담당 · **M3 홍은서:** 웹·API·DB 배포 담당
 
-- 회원가입·로그인 및 세션 유지·로그아웃
-- 공개 영상 목록·상세 정보 조회, 썸네일 표시
-- 로그인 회원의 샘플 영상 재생, 한국어·영어 VTT 자막 선택
-- 비로그인 재생 제한, 비공개 영상 조회·재생 차단
+![OTT 홈과 영상 목록](docs/portfolio/ott-home.jpg)
+
+- 회원가입·세션 인증, 공개 영상 조회, 로그인 회원의 영상 재생
+- [상세 화면](docs/portfolio/ott-detail.jpg) · [한국어 자막 재생](docs/portfolio/ott-ko.jpg) · [영어 자막 재생](docs/portfolio/ott-en.jpg)
+- 배포 화면은 영상과 자막 표시의 증거. 자막 생성 파이프라인은 [별도 실행 문서](m3-ott/ai-service/README.md) 참고.
 
 ### 검증 자료
 
@@ -52,17 +67,4 @@
 | 영상 목록 · 상세 조회 | [목록 200](m3-ott/docs/evidence/10-video-list-empty-200.png) · [페이지 오류 400](m3-ott/docs/evidence/11-video-page-invalid-400.png) · [미존재 404](m3-ott/docs/evidence/12-video-not-found-404.png) |
 | 비공개 영상 접근 제한 | [상세 404](m3-ott/docs/evidence/13-private-detail-404.png) · [재생 404](m3-ott/docs/evidence/14-private-playback-404.png) |
 
-영상 재생·한영 자막은 로컬에서 확인했으며 화면 캡처는 추후 등록 예정. AI 자막 생성·Jenkins 배포·미디어 CDN 구축은 아직 검증 전.
-
-[환경 설정](m3-ott/README.md) · [전체 검증 캡처](m3-ott/docs/evidence/README.md) · [ERD](../design/erd/ott/README.md) · [클래스 다이어그램](../design/classdiagram/ott/README.md)
-
-## Store
-
-메인 화면: 미등록 · 아래 기능은 개발 예정 범위입니다.
-
-- Store 자체 회원가입·로그인
-- 굿즈 목록·상세 조회
-- 장바구니 추가·수량 변경·삭제
-- 전체 또는 선택 상품 모의 주문, 배송 정보 입력 및 주문 내역 조회
-
-[환경 설정](m5-store/README.md) · [ERD](../design/erd/store/README.md) · [클래스 다이어그램](../design/classdiagram/store/README.md)
+[실행 방법](m3-ott/README.md) · [API 검증 캡처](m3-ott/docs/evidence/README.md) · [ERD](../design/erd/ott/README.md) · [클래스 다이어그램](../design/classdiagram/ott/README.md)
