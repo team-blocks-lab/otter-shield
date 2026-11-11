@@ -26,7 +26,7 @@ Team Blocks · 킥오프 2026.10.16 · 최종 발표 2026.11.16
 |---|---|---|
 | OTTer Store | 공개 HTTPS에서 상품 조회부터 모의 주문 완료까지 확인. PR 머지로 시작한 이미지 빌드·배포 설정 갱신과 EKS 롤아웃 확인 | [시연·자동 배포](apps/README.md#otter-store) |
 | OTTer OTT | 서비스 화면에서 영상 재생과 한국어·영어 자막 표시 확인 | [재생 화면·API 검증](apps/README.md#otter-ott) |
-| OTTer Inside | 개발 PC에서 로그인·게시글·첨부 API와 화면 확인 | [테스트 기록](apps/m1-intranet/docs/TEST_REPORT.md) |
+| OTTer Inside | 개발 PC에서 로그인·게시글·첨부 API와 화면 확인 | [게시판 화면·API 검증](apps/README.md#사내-게시판--otter-inside) |
 
 ## 보안 개선 전후
 
