@@ -17,7 +17,7 @@ Team Blocks · 킥오프 2026.10.16 · 최종 발표 2026.11.16
 | **M1 유용수** | 한국 본사 | 부서 VLAN·라우팅·VPN, 관리망 접근 정책 | 구축 [#14](https://github.com/team-blocks-lab/otter-shield/issues/14) · [기술서](https://app.notion.com/p/3fdddb1a63778183b7a1e9a9f0ed714e?source=copy_link) |
 | **M2 윤서영** | 독일 본사 | 업무망·게시판 배포, Wazuh 인증 로그 탐지 | 구축 [#19](https://github.com/team-blocks-lab/otter-shield/issues/19) · [기술서](https://www.notion.so/2-401432be815b8078abb2c707a8949dbd?source=copy_link) |
 | **M3 홍은서 · PL** | 한국 OTT | vSphere·Kubernetes, 웹·API·DB 배포 및 통합 검토 | 구축 [#24](https://github.com/team-blocks-lab/otter-shield/issues/24) · [기술서](https://app.notion.com/p/M3-3feaf3d0fc69814dbacbfc2f49641045?source=copy_link) |
-| **M4 박진혁** | 백업·DR | DB 복제·백업 보관·별도 환경 복원 | 구축 [#29](https://github.com/team-blocks-lab/otter-shield/issues/29) · [기술서](https://app.notion.com/p/OTT-3fe63051315180188c80d52d09aa7bed?source=copy_link) |
+| **M4 박진혁** | 백업·DR | DB 복제·백업 보관·별도 환경 복원 | 구축 [#29](https://github.com/team-blocks-lab/otter-shield/issues/29) · [기술서](https://app.notion.com/p/2-3fe63051315180789253dc5752bc0e6d?source=copy_link) |
 | **M5 유은혜 · PM** | 캐나다 지사·AWS | 지사망·VPN, 앱 개발, Store EKS 배포 자동화 | 구축 [#34](https://github.com/team-blocks-lab/otter-shield/issues/34) · [기술서](https://app.notion.com/p/05-Project-OTTer-Shield-M5-3ff1b198732a81c19379cd1f5730afbe?source=copy_link) |
 
 ## 확인된 서비스 결과
